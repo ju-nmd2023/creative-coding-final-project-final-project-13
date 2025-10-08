@@ -1,0 +1,6 @@
+body {
+  background-color: rgb(0, 0, 0); /*just to do things right I guess*/
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+}
