@@ -1,10 +1,30 @@
 //REFERENCES
 //https://codepen.io/pixelkind/pen/JjwGQgd - the following code was created with the help of this tutorial
 //https://chatgpt.com/share/68e569bc-9108-8003-be50-cb73fb308bed - the following code was created with the help of chatGPT
+//https://tonejs.github.io/docs/14.9.17/index.html - this website was used to understand Tone.js
 
 //VARIABLES
 let drawX = 0;
 let drawY = 0;
+
+/*-------------------------------*/
+
+//BACKGROUND MUSIC SETUP
+window.addEventListener("click", () => {
+  Tone.start();
+  //tone.js in browsers requires a user interaction in order to play audio
+});
+
+window.addEventListener("load", () => {
+  const melody = new Tone.Player(
+    "Underground-Stream_Looping.mp3"
+  ).toDestination();
+  melody.autostart = true;
+  melody.loop = true;
+  melody.volume.value = -10;
+  melody.fadeIn = 15;
+  melody.fadeOut = 5;
+});
 
 /*-------------------------------*/
 
