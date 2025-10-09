@@ -1,7 +1,8 @@
 class Critter {
-  constructor(x, y) {
+  constructor(x, y, fill) {
     this.x = x;
     this.y = y;
+    this.fill = fill;
   }
 
   swirl(version) {
@@ -55,6 +56,21 @@ class Critter {
       rect(this.x + 5, this.y - 15, 5);
       rect(this.x + 5, this.y + 5, 5);
     } else if (version === 1) {
+      if (this.fill === true) {
+        push();
+        fill(255, 255, 255, 190);
+        rect(this.x - 30, this.y - 20, 60, 50);
+        rect(this.x - 30, this.y + 30, 20, 5);
+        rect(this.x + 10, this.y + 30, 20, 5);
+        rect(this.x - 40, this.y - 15, 10);
+        rect(this.x - 35, this.y - 5, 5);
+        rect(this.x + 30, this.y - 15, 10);
+        rect(this.x + 30, this.y - 5, 5);
+        rect(this.x - 15, this.y - 25, 30, 5);
+        rect(this.x - 10, this.y - 35, 20, 10);
+        rect(this.x - 5, this.y - 40, 10, 5);
+        pop();
+      }
       rect(this.x - 45, this.y - 15, 5, 10);
       rect(this.x - 40, this.y - 20, 25, 5);
       rect(this.x - 40, this.y - 5, 5);
@@ -80,6 +96,16 @@ class Critter {
       rect(this.x + 35, this.y - 5, 5);
       rect(this.x + 40, this.y - 15, 5, 10);
     } else if (version === 2) {
+      if (this.fill === true) {
+        push();
+        fill(255, 255, 255, 190);
+        rect(this.x - 20, this.y - 5, 5);
+        rect(this.x + 10, this.y - 5, 5);
+        rect(this.x - 5, this.y - 35, 5, 65);
+        rect(this.x - 15, this.y - 20, 10, 35);
+        rect(this.x, this.y - 20, 10, 35);
+        pop();
+      }
       rect(this.x - 30, this.y - 5, 10, 5);
       rect(this.x - 20, this.y - 10, 5);
       rect(this.x - 20, this.y, 5);
@@ -162,6 +188,15 @@ class Critter {
     push();
     noStroke();
     fill(255);
+    if (this.fill === true) {
+      push();
+      fill(255, 255, 255, 190);
+      rect(this.x + 10, this.y + 10, 5);
+      rect(this.x - 40, this.y - 10, 75, 20);
+      rect(this.x - 25, this.y - 15, 45, 5);
+      rect(this.x - 10, this.y - 20, 15, 5);
+      pop();
+    }
     //HEAD
     rect(this.x - 45, this.y - 5, 5, 10);
     rect(this.x - 40, this.y - 10, 10, 5);
@@ -281,11 +316,11 @@ function draw() {
   let swirl0 = new Critter(100, 100).swirl(0);
   let swirl1 = new Critter(200, 100).swirl(1);
   let star0 = new Critter(300, 100).star(0);
-  let star1 = new Critter(400, 100).star(1);
-  let star2 = new Critter(100, 400).star(2);
+  let star1 = new Critter(400, 100, true).star(1);
+  let star2 = new Critter(100, 400, true).star(2);
   let star3 = new Critter(200, 400).star(3);
   let sprite = new Critter(300, 400).sprite();
-  let jellyfish = new Critter(450, 400).jellyfish();
+  let jellyfish = new Critter(450, 400, true).jellyfish();
   swirl0;
   swirl1;
   star0;
