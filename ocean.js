@@ -2,13 +2,21 @@
 //https://codepen.io/pixelkind/pen/JjwGQgd - the following code was created with the help of this tutorial
 //https://chatgpt.com/share/68e569bc-9108-8003-be50-cb73fb308bed - the following code was created with the help of chatGPT
 //https://tonejs.github.io/docs/14.9.17/index.html - this website was used to understand Tone.js
+//https://ffd8.github.io/p5.glitch/ - this website was used to understand the p5.glitch library
 
 //VARIABLES
 let drawX = 0;
 let drawY = 0;
+//handpose variables
+let video;
+let handpose;
+let predictions = [];
+let pointer;
+let thumb;
+//glitch
+let glitch;
 
 /*-------------------------------*/
-
 //BACKGROUND MUSIC SETUP
 window.addEventListener("click", () => {
   Tone.start();
@@ -27,17 +35,45 @@ window.addEventListener("load", () => {
 });
 
 /*-------------------------------*/
-
 //SETUP FUNCTIONS
+function preload() {
+  handpose = ml5.handPose();
+}
+
 function setup() {
   /*creating canvas with system variables*/
   createCanvas(windowWidth, windowHeight);
-  noLoop();
+  //start video recording & hand detection
+  video = createCapture(VIDEO);
+  video.hide();
+  handpose.detectStart(video, getHandsData);
+  //initiate glitch
+  glitch = new Glitch();
 }
 
 function windowResized() {
   //resize p5.js canvas to fit window width and height
   resizeCanvas(windowWidth, windowHeight);
+}
+
+/*-------------------------------*/
+//HANDPOSE
+function getHandsData(results) {
+  predictions = results;
+}
+
+function squish() {
+  //base code for tracking pointer & thumb
+  for (let hand of predictions) {
+    const keypoints = hand.keypoints;
+    for (let keypoint of keypoints) {
+      if (keypoint.name === "index_finger_tip") {
+        pointer = keypoint;
+      } else if (keypoint.name === "thumb_tip") {
+        thumb = keypoint;
+      }
+    }
+  }
 }
 
 /*-------------------------------*/
@@ -158,6 +194,18 @@ function drawPlantType2() {
 
 /*-------------------------------*/
 
+/*-------------------------------*/
+//GLITCH
+function glitchThis() {
+  glitch.loadQuality(0.8);
+  glitch.loadImage(video); //will have to replace "video" with a jpg of our final static bg
+  glitch.randomBytes(2);
+  glitch.buildImage();
+  image(glitch.image, 0, 0, windowWidth, 600);
+}
+
+/*-------------------------------*/
+
 //!THE! DRAW FUNCTION
 function draw() {
   background(255, 255, 255);
@@ -192,4 +240,10 @@ function draw() {
 
   //DRAWING THE WATER VARIATION/REFLECTION
   drawWaterVariation();
+
+  //HAND TRACING - SQUISH CRITTERS
+  squish();
+
+  //GLITCH
+  glitchThis();
 }
