@@ -9,17 +9,16 @@
 //x and y for drawing the background
 let drawX = 0;
 let drawY = 0;
+
 //handpose variables
 let video;
 let handpose;
 let predictions = [];
 let pointer;
 let thumb;
+
 //glitch
 let glitch;
-
-/*-------------------------------*/
-//SOUND SETUP
 
 //sound effect
 const now = Tone.now();
@@ -27,12 +26,9 @@ const synthNotes = ["G6", "G5"];
 const monoSynth = new Tone.Synth().toDestination();
 //add more here???
 
-function mousePressed(/*change this so if fits with the movement detector later!!*/) {
-  monoSynth.triggerAttackRelease("E6", 0.1);
-}
-
+/*-------------------------------*/
+//SOUND SETUP
 //background music
-//BACKGROUND MUSIC SETUP
 window.addEventListener("click", () => {
   Tone.start();
   //tone.js in bwaterNoiseRowers requires a user interaction in order to play audio
@@ -48,6 +44,10 @@ window.addEventListener("load", () => {
   melody.fadeIn = 15;
   melody.fadeOut = 5;
 });
+
+function mousePressed(/*change this so if fits with the movement detector later!!*/) {
+  monoSynth.triggerAttackRelease("E6", 0.1);
+}
 
 /*-------------------------------*/
 //SETUP FUNCTIONS
@@ -302,8 +302,6 @@ function drawBioAlgae() {
 }
 
 /*-------------------------------*/
-
-/*-------------------------------*/
 //GLITCH
 function glitchThis() {
   glitch.loadQuality(0.8);
@@ -314,7 +312,6 @@ function glitchThis() {
 }
 
 /*-------------------------------*/
-
 //!THE! DRAW FUNCTION
 function draw() {
   //THE BASICS
