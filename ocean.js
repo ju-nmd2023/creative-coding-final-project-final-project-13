@@ -17,9 +17,10 @@ let thumb;
 let glitch;
 
 //sound effect variables
-const now = Tone.now();
-const synthNotes = ["G6", "G5"];
-const monoSynth = new Tone.Synth().toDestination();
+const monoSynth = new Tone.MetalSynth().toDestination();
+
+//time management for water movement and water variation
+let waterTime = 0;
 
 /*-----------------SOUND SETUP-----------------*/
 //background music
@@ -39,7 +40,8 @@ window.addEventListener("load", () => {
 });
 
 function mousePressed(/*change this so if fits with the movement detector later!!*/) {
-  monoSynth.triggerAttackRelease("E6", 0.1);
+  monoSynth.triggerAttackRelease("C7", "8n", 0);
+  monoSynth.triggerAttackRelease("C6", "8n", 0 + 0.5);
 }
 
 /*---------------SETUP FUNCTIONS-----------------*/
@@ -50,7 +52,7 @@ function mousePressed(/*change this so if fits with the movement detector later!
 function setup() {
   //basics
   createCanvas(1440, 825);
-  frameRate(1);
+  frameRate(3);
 
   //video recording & hand detection
   //video = createCapture(VIDEO);
@@ -81,31 +83,38 @@ function squish() {
 }
 
 /*---------------OTHER FUNCTIONS----------------*/
-//water variation function
+//water variation function - TRYING TO MAKE IT WORK WITH THE PERLIN NOISE :(
 function drawWaterVariation() {
   push();
   noStroke();
-  const waterVariationFields = 600;
+  const waterVariationFields = 200;
   const variationWidth = 1440 / waterVariationFields;
   const variationHeight = 825 / waterVariationFields;
   for (let xVariation = 0; xVariation < waterVariationFields; xVariation++) {
     for (let yVariation = 0; yVariation < waterVariationFields; yVariation++) {
-      if (Math.random() < 0.0002) {
-        fill(0, 100, 255);
+      if (Math.random() < 0.0001) {
+        fill(0, 0, 255, 30);
       } else {
-        fill(0);
+        noFill();
       }
-      square(
-        xVariation * variationWidth,
-        yVariation * variationHeight,
-        variationHeight
-      );
+      ellipse(xVariation * variationWidth, yVariation * variationHeight, 10);
     }
   }
   pop();
 }
 
-//add the perlin noise here!
+//perlin noise - make the water move
+function drawWaterMovement() {
+  for (let x = 0; x < width; x += 10) {
+    for (let y = 0; y < height; y += 10) {
+      let waterNoise = noise(0.01 * x, 0.01 * y, waterTime);
+      noStroke();
+      fill(10, 10, 0 + waterNoise * 150);
+      rect(x, y, 10, 10);
+    }
+  }
+  waterTime += 0.08;
+}
 
 //glitch function
 function glitchThis() {
@@ -121,7 +130,7 @@ function glitchThis() {
 function drawCliff1() {
   //cliff
   push();
-  fill(0, 0, 40);
+  fill(0, 0, 30);
   noStroke();
   rect(0, 0, 40, 825);
   rect(40, 30, 20, 825);
@@ -142,7 +151,7 @@ function drawCliff1() {
 
   //cliff shadows
   push();
-  fill(0, 0, 30);
+  fill(0, 0, 20);
   noStroke();
   rect(0, 250, 40, 825);
   rect(40, 300, 40, 825);
@@ -156,7 +165,7 @@ function drawCliff1() {
 function drawCliff2() {
   //cliff
   push();
-  fill(0, 0, 40);
+  fill(0, 0, 30);
   noStroke();
   rect(600, 800, 40, 825);
   rect(640, 750, 30, 825);
@@ -176,7 +185,7 @@ function drawCliff2() {
 
   //cliff shadows
   push();
-  fill(0, 0, 30);
+  fill(0, 0, 20);
   noStroke();
   rect(750, 660, 80, 825);
   rect(830, 600, 100, 825);
@@ -274,7 +283,7 @@ function drawBioAlgae() {
 function draw() {
   //basics
   background(0, 0, 0);
-  drawWaterVariation();
+  drawWaterMovement();
 
   //background
   drawCliff1();
@@ -282,9 +291,11 @@ function draw() {
   drawPlants();
   drawBioAlgae();
 
+  drawWaterVariation();
+
   //hand tracing - squish critters
   squish();
 
   //glitch
-  //glitchThis(); 
+  //glitchThis();
 }
