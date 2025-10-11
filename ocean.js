@@ -6,10 +6,6 @@
 //https://ffd8.github.io/p5.glitch/ - this website was used to understand the p5.glitch library
 
 //VARIABLES
-//x and y for drawing the background
-let drawX = 0;
-let drawY = 0;
-
 //handpose variables
 let video;
 let handpose;
@@ -17,21 +13,18 @@ let predictions = [];
 let pointer;
 let thumb;
 
-//glitch
+//glitch variables
 let glitch;
 
-//sound effect
+//sound effect variables
 const now = Tone.now();
 const synthNotes = ["G6", "G5"];
 const monoSynth = new Tone.Synth().toDestination();
-//add more here???
 
-/*-------------------------------*/
-//SOUND SETUP
+/*-----------------SOUND SETUP-----------------*/
 //background music
 window.addEventListener("click", () => {
   Tone.start();
-  //tone.js in bwaterNoiseRowers requires a user interaction in order to play audio
 });
 
 window.addEventListener("load", () => {
@@ -49,31 +42,26 @@ function mousePressed(/*change this so if fits with the movement detector later!
   monoSynth.triggerAttackRelease("E6", 0.1);
 }
 
-/*-------------------------------*/
-//SETUP FUNCTIONS
-function preload() {
+/*---------------SETUP FUNCTIONS-----------------*/
+/*function preload() {
   handpose = ml5.handPose();
-}
+}*/
 
 function setup() {
-  /*creating canvas with system variables*/
-  createCanvas(windowWidth, windowHeight);
+  //basics
+  createCanvas(1440, 825);
   frameRate(1);
-  //start video recording & hand detection
-  video = createCapture(VIDEO);
-  video.hide();
-  handpose.detectStart(video, getHandsData);
+
+  //video recording & hand detection
+  //video = createCapture(VIDEO);
+  //video.hide();
+  //handpose.detectStart(video, getHandsData);
+
   //initiate glitch
-  glitch = new Glitch();
+  //glitch = new Glitch();
 }
 
-function windowResized() {
-  //resize p5.js canvas to fit window width and height
-  resizeCanvas(windowWidth, windowHeight);
-}
-
-/*-------------------------------*/
-//HANDPOSE
+/*----------------HANDPOSE----------------*/
 function getHandsData(results) {
   predictions = results;
 }
@@ -92,37 +80,20 @@ function squish() {
   }
 }
 
-/*-------------------------------*/
-//OTHER FUNCTIONS
-function drawBaseCanvas(/*creating the back of the background*/) {
-  //main area of the artwork and the background colour of it
-  push();
-  fill(0, 30, 60);
-  rectMode(CENTER);
-  rect(width / 2, height / 2, width, 600);
-  pop();
-}
-
-/*function drawWaterNoise() {
-  if (y > height / 2 - 300 && y < height / 2 + 300) {
-    let n = noise(x * 0.01, y * 0.01);
-    // draw something based on n
-  }
-}*/
-
+/*---------------OTHER FUNCTIONS----------------*/
+//water variation function
 function drawWaterVariation() {
   push();
-  const waterVariationFields = 70;
-  const waterHeight = 600;
-  const variationWidth = width / waterVariationFields;
-  const variationHeight = waterHeight / waterVariationFields;
   noStroke();
+  const waterVariationFields = 600;
+  const variationWidth = 1440 / waterVariationFields;
+  const variationHeight = 825 / waterVariationFields;
   for (let xVariation = 0; xVariation < waterVariationFields; xVariation++) {
     for (let yVariation = 0; yVariation < waterVariationFields; yVariation++) {
-      if (Math.random() < 0.002) {
-        fill(10, 25, 200);
+      if (Math.random() < 0.0002) {
+        fill(0, 100, 255);
       } else {
-        noFill();
+        fill(0);
       }
       square(
         xVariation * variationWidth,
@@ -134,175 +105,9 @@ function drawWaterVariation() {
   pop();
 }
 
-//OTHER THINGS (CANVES, BOATS(?) ETC.)
-function drawCave() {
-  //basics - from left to right
-  push();
-  noStroke();
-  fill(0, 0, 0);
-  rect(drawX + 680, drawY + 560, 35, 40);
-  rect(drawX + 710, drawY + 510, 30, 90);
-  rect(drawX + 740, drawY + 460, 40, 140);
-  rect(drawX + 780, drawY + 400, 60, 200);
-  rect(drawX + 830, drawY + 440, 50, 160);
-  rect(drawX + 880, drawY + 480, 20, 120);
-  rect(drawX + 900, drawY + 540, 30, 60);
-  pop();
+//add the perlin noise here!
 
-  //extra small pixels - from left to right
-  push();
-  noStroke();
-  fill(0, 0, 0);
-  rect(drawX + 690, drawY + 545, 20, 20);
-  rect(drawX + 750, drawY + 440, 15, 25);
-  rect(drawX + 765, drawY + 430, 15, 35);
-  pop();
-}
-
-/*-------------------------------*/
-//CLIFF FUNCTIONS
-function drawCliff1() {
-  //basics - from left to right
-  push();
-  noStroke();
-  fill(0, 0, 30);
-  rect(drawX, drawY, 20, 600);
-  rect(drawX, drawY + 50, 40, 550);
-  rect(drawX, drawY + 100, 60, 500);
-  rect(drawX, drawY + 200, 100, 400);
-  rect(drawX + 100, drawY + 300, 100, 300);
-  rect(drawX + 200, drawY + 400, 100, 200);
-  rect(drawX + 300, drawY + 500, 100, 100);
-  pop();
-
-  //extra small pixels - from left to right
-  push();
-  noStroke();
-  fill(0, 0, 30);
-  rect(drawX + 60, drawY + 170, 15, 40);
-  rect(drawX + 75, drawY + 180, 15, 30);
-  rect(drawX + 100, drawY + 240, 30, 70);
-  rect(drawX + 130, drawY + 260, 40, 50);
-  rect(drawX + 200, drawY + 360, 50, 50);
-  rect(drawX + 250, drawY + 375, 20, 35);
-  rect(drawX + 300, drawY + 450, 40, 60);
-  rect(drawX + 340, drawY + 470, 30, 40);
-  pop();
-
-  //shadows
-  push();
-  noStroke();
-  fill(0, 0, 20);
-  rect(drawX, drawY + 250, 50, 350);
-  rect(drawX + 50, drawY + 320, 100, 280);
-  rect(drawX + 150, drawY + 400, 70, 200);
-  rect(drawX + 220, drawY + 470, 70, 130);
-  rect(drawX + 290, drawY + 500, 40, 100);
-  pop();
-}
-
-function drawCliff2() {
-  //basics - from left to right
-  push();
-  noStroke();
-  fill(0, 0, 30);
-  rect(drawX + 500, drawY + 500, 100, 100);
-  rect(drawX + 600, drawY + 400, 100, 200);
-  rect(drawX + 650, drawY + 300, 300, 300);
-  rect(drawX + 800, drawY + 250, 100, 200);
-  rect(drawX + 900, drawY + 500, 100, 100);
-  pop();
-
-  //extra small pixels - from left to right
-  push();
-  noStroke();
-  fill(0, 0, 30);
-  rect(drawX + 540, drawY + 480, 40, 30);
-  rect(drawX + 560, drawY + 460, 50, 50);
-  rect(drawX + 680, drawY + 280, 50, 30);
-  rect(drawX + 730, drawY + 270, 30, 40);
-  rect(drawX + 945, drawY + 430, 15, 30);
-  rect(drawX + 1000, drawY + 550, 20, 50);
-  pop();
-
-  //shadows
-  push();
-  noStroke();
-  fill(0, 0, 25);
-  rect(drawX + 520, drawY + 520, 80, 80);
-  rect(drawX + 600, drawY + 490, 100, 110);
-  rect(drawX + 700, drawY + 350, 200, 250);
-  rect(drawX + 820, drawY + 400, 100, 140);
-  rect(drawX + 900, drawY + 530, 70, 70);
-  pop();
-}
-
-/*-------------------------------*/
-//PLANTATION VARIATION - Gonna draw more
-function drawPlantType1() {
-  push();
-  noStroke();
-  fill(13, 25, 10);
-  //stem
-  rect(drawX + 115, drawY + 220, 7, 20);
-  //left thing
-  rect(drawX + 110, drawY + 215, 7, 17);
-  rect(drawX + 106, drawY + 200, 5, 20);
-  rect(drawX + 108, drawY + 180, 3, 20);
-  //middle thing
-  rect(drawX + 115, drawY + 190, 5, 40);
-  rect(drawX + 118, drawY + 172, 3, 20);
-  //right thing
-  rect(drawX + 120, drawY + 220, 6, 14);
-  rect(drawX + 125, drawY + 200, 6, 25);
-  rect(drawX + 130, drawY + 190, 3, 25);
-  pop();
-}
-
-function drawPlantType2() {
-  push();
-  noStroke();
-  fill(13, 25, 10);
-  rect(drawX + 20, drawY + 570, 10, 30);
-  rect(drawX + 30, drawY + 550, 5, 50);
-  rect(drawX + 35, drawY + 560, 5, 40);
-  rect(drawX + 40, drawY + 530, 5, 70);
-  rect(drawX + 45, drawY + 540, 7, 60);
-  rect(drawX + 45, drawY + 540, 7, 60);
-  rect(drawX + 50, drawY + 580, 15, 20);
-  rect(drawX + 60, drawY + 530, 5, 60);
-  rect(drawX + 65, drawY + 550, 5, 50);
-  pop();
-}
-
-function drawNormalAlgae() {
-  push();
-  noStroke();
-  fill(13, 25, 10);
-  rect(200, drawY + 350, 30, 10);
-  rect(270, drawY + 390, 15, 10);
-  rect(400, drawY + 585, 100, 15);
-  rect(420, drawY + 575, 15, 15);
-  rect(775, drawY + 280, 25, 20);
-  rect(820, drawY + 590, 75, 10);
-  rect(870, drawY + 581, 15, 10);
-  rect(900, drawY + 290, 35, 10);
-  rect(1215, drawY + 490, 25, 10);
-  pop();
-}
-
-function drawBioAlgae() {
-  push();
-  noStroke();
-  fill(10, 25, 200);
-  rect(125, drawY + 196, 5, 5);
-  rect(120, drawY + 590, 65, 10);
-  rect(830, drawY + 586, 40, 5);
-  pop();
-}
-
-/*-------------------------------*/
-//GLITCH
+//glitch function
 function glitchThis() {
   glitch.loadQuality(0.8);
   glitch.loadImage(video); //will have to replace "video" with a jpg of our final static bg
@@ -311,61 +116,175 @@ function glitchThis() {
   image(glitch.image, 0, 0, windowWidth, 600);
 }
 
-/*-------------------------------*/
-//!THE! DRAW FUNCTION
+/*---------BACKGROUND DRAW FUNCTIONS---------*/
+
+function drawCliff1() {
+  //cliff
+  push();
+  fill(0, 0, 40);
+  noStroke();
+  rect(0, 0, 40, 825);
+  rect(40, 30, 20, 825);
+  rect(60, 70, 10, 825);
+  rect(70, 100, 20, 825);
+  rect(90, 160, 15, 825);
+  rect(105, 200, 30, 825);
+  rect(135, 260, 40, 825);
+  rect(175, 320, 20, 825);
+  rect(195, 350, 30, 825);
+  rect(225, 445, 20, 825);
+  rect(225, 510, 30, 825);
+  rect(245, 580, 30, 825);
+  rect(270, 660, 30, 825);
+  rect(300, 700, 40, 825);
+  rect(340, 800, 45, 825);
+  pop();
+
+  //cliff shadows
+  push();
+  fill(0, 0, 30);
+  noStroke();
+  rect(0, 250, 40, 825);
+  rect(40, 300, 40, 825);
+  rect(80, 350, 40, 825);
+  rect(120, 400, 40, 825);
+  rect(160, 600, 40, 825);
+  rect(200, 730, 40, 825);
+  pop();
+}
+
+function drawCliff2() {
+  //cliff
+  push();
+  fill(0, 0, 40);
+  noStroke();
+  rect(600, 800, 40, 825);
+  rect(640, 750, 30, 825);
+  rect(670, 720, 30, 825);
+  rect(700, 630, 50, 825);
+  rect(750, 600, 20, 825);
+  rect(770, 560, 40, 825);
+  rect(810, 460, 90, 825);
+  rect(900, 370, 90, 825);
+  rect(990, 300, 50, 825);
+  rect(1040, 280, 40, 825);
+  rect(1080, 200, 40, 825);
+  rect(1100, 150, 60, 825);
+  rect(1160, 100, 40, 825);
+  rect(1200, 50, 300, 825);
+  pop();
+
+  //cliff shadows
+  push();
+  fill(0, 0, 30);
+  noStroke();
+  rect(750, 660, 80, 825);
+  rect(830, 600, 100, 825);
+  rect(930, 430, 100, 825);
+  rect(1030, 350, 100, 825);
+  rect(1100, 230, 70, 825);
+  rect(1150, 190, 70, 825);
+  rect(1200, 160, 70, 825);
+  rect(1260, 120, 200, 825);
+  pop();
+
+  //cliff cave
+  push();
+  fill(0, 0, 0);
+  noStroke();
+  rect(1000, 700, 50, 825);
+  rect(1050, 600, 50, 825);
+  rect(1100, 500, 100, 825);
+  rect(1200, 400, 100, 825);
+  rect(1300, 350, 150, 825);
+  pop();
+}
+
+function drawPlants() {
+  //vegetation hanging from the cave
+  push();
+  fill(10, 35, 20);
+  noStroke();
+  rect(1230, 395, 10, 30);
+  rect(1240, 395, 6, 60);
+  rect(1245, 395, 10, 40);
+  rect(1255, 395, 6, 70);
+  rect(1261, 395, 6, 20);
+  pop();
+
+  //vegetation on the side of the cave
+  push();
+  fill(10, 35, 20);
+  noStroke();
+  rect(1010, 770, 10, 100);
+  rect(1000, 750, 10, 100);
+  rect(990, 720, 10, 110);
+  rect(980, 730, 10, 100);
+  rect(970, 750, 10, 100);
+  rect(960, 770, 10, 100);
+  rect(950, 750, 10, 100);
+  rect(940, 780, 10, 100);
+  pop();
+
+  //vegetation on the left cliff
+  push();
+  fill(10, 35, 20);
+  noStroke();
+  rect(135, 250, 40, 10);
+  rect(145, 240, 10, 20);
+  pop();
+
+  //vegetation on the right cliff
+  push();
+  fill(10, 35, 20);
+  noStroke();
+  rect(820, 450, 80, 10);
+  rect(835, 450, 10, 20);
+  pop();
+}
+
+function drawBioAlgae() {
+  //bio algae on the right cliff
+  push();
+  fill(0, 100, 255);
+  noStroke();
+  rect(850, 440, 50, 10);
+  pop();
+
+  //bio algae on vegetation beside the cave
+  push();
+  fill(0, 100, 255);
+  noStroke();
+  rect(970, 750, 10, 10);
+  pop();
+
+  //bio algae/monsters in the cave
+  push();
+  fill(0, 100, 255);
+  noStroke();
+  rect(1100, 640, 10, 10);
+  rect(1140, 635, 10, 10);
+  rect(1300, 550, 10, 10);
+  rect(1350, 555, 10, 10);
+  pop();
+}
+
+/*---------------!THE! DRAW FUNCTION----------------*/
+
 function draw() {
-  //THE BASICS
-  background(0, 0, 30);
-  drawBaseCanvas();
-  let variationFit = height / 2 - 300;
-  translate(0, variationFit);
-
-  //DRAWING THE CLIFFS
-  //cliff 1
-  drawCliff1();
-  //cliff 2
-  drawCliff2();
-  //draw extra cliff by the edge
-  push();
-  translate(drawX + 700, drawY);
-  drawCliff2();
-  pop();
-
-  //DRAW THE EXTRA STUFF
-  drawCave();
-
-  //DRAWING THE PLANTS
-  //plant type 1 - placement 1
-  drawPlantType1();
-  //plant type 1 - placement 2 (by the cave)
-  push();
-  translate(drawX + 600, drawY + 360);
-  drawPlantType1();
-  pop();
-
-  //plant type 2 - placement 1
-  drawPlantType2();
-  //plant type 2 - placement 2
-  push();
-  translate(drawX + 50, drawY);
-  drawPlantType2();
-  pop();
-  //plant type 2 - placement 3
-  push();
-  translate(drawX + 820, drawY - 350);
-  drawPlantType2();
-  pop();
-
-  //Algae
-  drawNormalAlgae();
-  drawBioAlgae();
-
-  //DRAWING THE EXTRA STUFF
+  //basics
+  background(0, 0, 0);
   drawWaterVariation();
 
-  //HAND TRACING - SQUISH CRITTERS
+  //background
+  drawCliff1();
+  drawCliff2();
+  drawPlants();
+  drawBioAlgae();
+
+  //hand tracing - squish critters
   squish();
 
-  //GLITCH
-  glitchThis();
+  //glitch
+  //glitchThis(); 
 }
