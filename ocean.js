@@ -23,7 +23,22 @@ const monoSynth = new Tone.MetalSynth().toDestination();
 //time management for water movement and water variation
 let waterTime = 0;
 
-//critter management
+//critter variables
+const fieldSize = 50;
+const fieldSizeHalf = fieldSize / 2;
+const maxCols = Math.ceil(1440 / fieldSize);
+const maxRows = Math.ceil(825 / fieldSize);
+let shapes = [
+  "swirl0",
+  "swirl1",
+  "star0",
+  "star1",
+  "star2",
+  "star3",
+  "sprite",
+  "jellyfish",
+];
+let field;
 let critters = [];
 
 /*-----------------SOUND SETUP-----------------*/
@@ -58,7 +73,10 @@ window.preload = preload; */
 function setup() {
   //basics
   createCanvas(1440, 825);
-  //frameRate(3);
+  //frameRate(3); //CAN WE DELETE THIS?
+  //critters & flowfields
+  field = generateField();
+  generateCritters();
 
   /*   //video recording & hand detection
   video = createCapture(VIDEO);
@@ -287,6 +305,53 @@ function drawBioAlgae() {
 }
 
 /*---------CRITTERS DRAW FUNCTIONS---------*/
+function generateField() {
+  let field = [];
+  noiseSeed(Math.random() * 100);
+  for (let x = 0; x < maxCols; x++) {
+    field.push([]);
+    for (let y = 0; y < maxRows; y++) {
+      const value = noise(x / 10, y / 10) * Math.PI * 2;
+      field[x].push(p5.Vector.fromAngle(value));
+    }
+  }
+  return field;
+}
+
+function generateCritters() {
+  for (let i = 0; i < 200; i++) {
+    let critter = new Critter(
+      Math.random() * 1440,
+      Math.random() * 825,
+      random(shapes),
+      4,
+      0.1
+    );
+    critters.push(critter);
+  }
+}
+
+function drawCritters() {
+  for (let x = 0; x < maxCols; x++) {
+    for (let y = 0; y < maxRows; y++) {
+      const value = field[x][y];
+      push();
+      translate(x * fieldSize + fieldSizeHalf, y * fieldSize + fieldSizeHalf);
+      rotate(value.heading());
+      pop();
+    }
+  }
+
+  for (let critter of critters) {
+    const x = Math.floor(critter.position.x / fieldSize);
+    const y = Math.floor(critter.position.y / fieldSize);
+    const desiredDirection = field[x][y];
+    critter.follow(desiredDirection);
+    critter.update();
+    critter.checkBorders();
+    critter.draw();
+  }
+}
 
 /*---------------!THE! DRAW FUNCTION----------------*/
 
@@ -301,14 +366,13 @@ function draw() {
   drawPlants();
   drawBioAlgae();
 
-  push();
   frameRate(3);
   drawWaterVariation();
-  pop();
 
   //hand tracing - squish critters
   //squish();
 
+  frameRate(20);
   //glitch
   //glitchThis();
 

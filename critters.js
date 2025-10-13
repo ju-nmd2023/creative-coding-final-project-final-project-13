@@ -1,335 +1,377 @@
-class Critter {
-  constructor(x, y, fill) {
-    this.x = x;
-    this.y = y;
-    this.fill = fill;
+function swirl(x, y, version) {
+  push();
+  if (version === 0) {
+    rect(x - 35, y - 5, 5, 25);
+    rect(x - 30, y - 20, 5, 15);
+    rect(x - 25, y - 25, 5);
+    rect(x - 25, y, 5, 15);
+    rect(x - 20, y - 30, 35, 5);
+    rect(x - 20, y - 15, 5, 15);
+    rect(x - 20, y + 15, 5);
+    rect(x - 15, y - 20, 15, 5);
+    rect(x - 15, y + 20, 10, 5);
+    rect(x - 10, y + 5, 5, 10);
+    rect(x - 5, y, 5);
+    rect(x - 5, y + 10, 5);
+    rect(x - 5, y + 25, 25, 5);
+    rect(x, y - 15, 10, 5);
+    rect(x, y + 15, 10, 5);
+    rect(x + 10, y - 10, 5);
+    rect(x + 10, y + 10, 5);
+    rect(x + 15, y - 25, 10, 5);
+    rect(x + 15, y - 5, 5, 15);
+    rect(x + 20, y + 20, 5);
+    rect(x + 25, y - 20, 5);
+    rect(x + 25, y + 10, 5, 10);
+    rect(x + 30, y - 15, 5, 25);
+  } else if (version === 1) {
+    rect(x - 25, y - 5, 5);
+    rect(x - 20, y - 10, 15, 5);
+    rect(x - 5, y - 5, 10, 5);
+    rect(x + 5, y, 15, 5);
+    rect(x + 20, y - 5, 5);
   }
+  pop();
+}
 
-  swirl(version) {
-    push();
-    noStroke();
-    fill(255);
-    if (version === 0) {
-      rect(this.x - 35, this.y - 5, 5, 25);
-      rect(this.x - 30, this.y - 20, 5, 15);
-      rect(this.x - 25, this.y - 25, 5);
-      rect(this.x - 25, this.y, 5, 15);
-      rect(this.x - 20, this.y - 30, 35, 5);
-      rect(this.x - 20, this.y - 15, 5, 15);
-      rect(this.x - 20, this.y + 15, 5);
-      rect(this.x - 15, this.y - 20, 15, 5);
-      rect(this.x - 15, this.y + 20, 10, 5);
-      rect(this.x - 10, this.y + 5, 5, 10);
-      rect(this.x - 5, this.y, 5);
-      rect(this.x - 5, this.y + 10, 5);
-      rect(this.x - 5, this.y + 25, 25, 5);
-      rect(this.x, this.y - 15, 10, 5);
-      rect(this.x, this.y + 15, 10, 5);
-      rect(this.x + 10, this.y - 10, 5);
-      rect(this.x + 10, this.y + 10, 5);
-      rect(this.x + 15, this.y - 25, 10, 5);
-      rect(this.x + 15, this.y - 5, 5, 15);
-      rect(this.x + 20, this.y + 20, 5);
-      rect(this.x + 25, this.y - 20, 5);
-      rect(this.x + 25, this.y + 10, 5, 10);
-      rect(this.x + 30, this.y - 15, 5, 25);
-    } else if (version === 1) {
-      rect(this.x - 25, this.y - 5, 5);
-      rect(this.x - 20, this.y - 10, 15, 5);
-      rect(this.x - 5, this.y - 5, 10, 5);
-      rect(this.x + 5, this.y, 15, 5);
-      rect(this.x + 20, this.y - 5, 5);
-    }
-    pop();
-  }
-
-  star(version) {
-    push();
-    noStroke();
-    fill(255);
-    if (version === 0) {
-      rect(this.x - 20, this.y - 5, 35, 5);
-      rect(this.x - 5, this.y - 20, 5, 35);
-      rect(this.x - 10, this.y - 10, 15);
-      rect(this.x - 15, this.y - 15, 5);
-      rect(this.x - 15, this.y + 5, 5);
-      rect(this.x + 5, this.y - 15, 5);
-      rect(this.x + 5, this.y + 5, 5);
-    } else if (version === 1) {
-      if (this.fill === true) {
-        push();
-        fill(255, 255, 255, 190);
-        rect(this.x - 30, this.y - 20, 60, 50);
-        rect(this.x - 30, this.y + 30, 20, 5);
-        rect(this.x + 10, this.y + 30, 20, 5);
-        rect(this.x - 40, this.y - 15, 10);
-        rect(this.x - 35, this.y - 5, 5);
-        rect(this.x + 30, this.y - 15, 10);
-        rect(this.x + 30, this.y - 5, 5);
-        rect(this.x - 15, this.y - 25, 30, 5);
-        rect(this.x - 10, this.y - 35, 20, 10);
-        rect(this.x - 5, this.y - 40, 10, 5);
-        pop();
-      }
-      rect(this.x - 45, this.y - 15, 5, 10);
-      rect(this.x - 40, this.y - 20, 25, 5);
-      rect(this.x - 40, this.y - 5, 5);
-      rect(this.x - 35, this.y, 5);
-      rect(this.x - 35, this.y + 15, 5, 20);
-      rect(this.x - 30, this.y + 5, 5, 10);
-      rect(this.x - 30, this.y + 35, 20, 5);
-      rect(this.x - 20, this.y - 25, 5);
-      rect(this.x - 15, this.y - 35, 5, 10);
-      rect(this.x - 10, this.y - 40, 5);
-      rect(this.x - 10, this.y + 30, 5);
-      rect(this.x - 5, this.y - 45, 10, 5);
-      rect(this.x - 5, this.y + 25, 10, 5);
-      rect(this.x + 5, this.y - 40, 5);
-      rect(this.x + 5, this.y + 30, 5);
-      rect(this.x + 10, this.y - 35, 5, 10);
-      rect(this.x + 10, this.y + 35, 20, 5);
-      rect(this.x + 15, this.y - 25, 5);
-      rect(this.x + 15, this.y - 20, 25, 5);
-      rect(this.x + 25, this.y + 5, 5, 10);
-      rect(this.x + 30, this.y, 5);
-      rect(this.x + 30, this.y + 15, 5, 20);
-      rect(this.x + 35, this.y - 5, 5);
-      rect(this.x + 40, this.y - 15, 5, 10);
-    } else if (version === 2) {
-      if (this.fill === true) {
-        push();
-        fill(255, 255, 255, 190);
-        rect(this.x - 20, this.y - 5, 5);
-        rect(this.x + 10, this.y - 5, 5);
-        rect(this.x - 5, this.y - 35, 5, 65);
-        rect(this.x - 15, this.y - 20, 10, 35);
-        rect(this.x, this.y - 20, 10, 35);
-        pop();
-      }
-      rect(this.x - 30, this.y - 5, 10, 5);
-      rect(this.x - 20, this.y - 10, 5);
-      rect(this.x - 20, this.y, 5);
-      rect(this.x - 15, this.y - 20, 5, 10);
-      rect(this.x - 15, this.y + 5, 5, 10);
-      rect(this.x - 10, this.y - 35, 5, 15);
-      rect(this.x - 10, this.y + 15, 5, 15);
-      rect(this.x - 5, this.y - 45, 5, 10);
-      rect(this.x - 5, this.y + 30, 5, 10);
-      rect(this.x, this.y - 35, 5, 15);
-      rect(this.x, this.y + 15, 5, 15);
-      rect(this.x + 5, this.y - 20, 5, 10);
-      rect(this.x + 5, this.y + 5, 5, 10);
-      rect(this.x + 10, this.y - 10, 5);
-      rect(this.x + 10, this.y, 5);
-      rect(this.x + 15, this.y - 5, 10, 5);
-    } else if (version === 3) {
-      rect(this.x - 10, this.y - 5, 15, 5);
-      rect(this.x - 5, this.y - 10, 5, 15);
-    }
-    pop();
-  }
-
-  sprite() {
-    push();
-    noStroke();
-    fill(255);
-    //BODY
-    rect(this.x - 35, this.y - 15, 5);
-    rect(this.x - 35, this.y - 5, 5);
-    rect(this.x - 35, this.y + 5, 5);
-    rect(this.x - 30, this.y - 25, 5);
-    rect(this.x - 30, this.y - 15, 5, 25);
-    rect(this.x - 30, this.y + 15, 5);
-    rect(this.x - 25, this.y - 30, 5);
-    rect(this.x - 25, this.y - 20, 5);
-    rect(this.x - 25, this.y + 10, 5);
-    rect(this.x - 25, this.y + 20, 5);
-    rect(this.x - 20, this.y - 35, 5);
-    rect(this.x - 20, this.y - 25, 5);
-    rect(this.x - 20, this.y + 15, 5);
-    rect(this.x - 15, this.y - 30, 30, 5);
-    rect(this.x - 15, this.y + 20, 30, 5);
-    rect(this.x - 15, this.y + 25, 5);
-    rect(this.x - 10, this.y - 35, 5);
-    rect(this.x - 5, this.y + 25, 5);
-    rect(this.x, this.y - 35, 5);
-    rect(this.x + 5, this.y + 25, 5);
-    rect(this.x + 10, this.y - 35, 5);
-    rect(this.x + 15, this.y - 25, 5);
-    rect(this.x + 15, this.y + 15, 5);
-    rect(this.x + 15, this.y + 25, 5);
-    rect(this.x + 20, this.y - 30, 5);
-    rect(this.x + 20, this.y - 20, 5);
-    rect(this.x + 20, this.y + 10, 5);
-    rect(this.x + 20, this.y + 20, 5);
-    rect(this.x + 25, this.y - 25, 5);
-    rect(this.x + 25, this.y - 15, 5, 25);
-    rect(this.x + 25, this.y + 15, 5);
-    rect(this.x + 30, this.y - 15, 5);
-    rect(this.x + 30, this.y - 5, 5);
-    rect(this.x + 30, this.y + 5, 5);
-    //EYES
-    rect(this.x - 20, this.y - 10, 10, 15);
-    rect(this.x - 10, this.y - 10, 5, 15);
-    push();
-    fill(0);
-    rect(this.x - 10, this.y - 5, 5);
-    pop();
-    rect(this.x + 5, this.y - 10, 5, 15);
-    rect(this.x + 10, this.y - 10, 10, 15);
-    push();
-    fill(0);
-    rect(this.x + 5, this.y - 5, 5);
-    pop();
-    pop();
-  }
-
-  jellyfish() {
-    push();
-    noStroke();
-    fill(255);
-    if (this.fill === true) {
+function star(x, y, version, colouredIn) {
+  push();
+  if (version === 0) {
+    rect(x - 20, y - 5, 35, 5);
+    rect(x - 5, y - 20, 5, 35);
+    rect(x - 10, y - 10, 15);
+    rect(x - 15, y - 15, 5);
+    rect(x - 15, y + 5, 5);
+    rect(x + 5, y - 15, 5);
+    rect(x + 5, y + 5, 5);
+  } else if (version === 1) {
+    if (colouredIn === true) {
       push();
       fill(255, 255, 255, 190);
-      rect(this.x + 10, this.y + 10, 5);
-      rect(this.x - 40, this.y - 10, 75, 20);
-      rect(this.x - 25, this.y - 15, 45, 5);
-      rect(this.x - 10, this.y - 20, 15, 5);
+      rect(x - 30, y - 20, 60, 50);
+      rect(x - 30, y + 30, 20, 5);
+      rect(x + 10, y + 30, 20, 5);
+      rect(x - 40, y - 15, 10);
+      rect(x - 35, y - 5, 5);
+      rect(x + 30, y - 15, 10);
+      rect(x + 30, y - 5, 5);
+      rect(x - 15, y - 25, 30, 5);
+      rect(x - 10, y - 35, 20, 10);
+      rect(x - 5, y - 40, 10, 5);
       pop();
     }
-    //HEAD
-    rect(this.x - 45, this.y - 5, 5, 10);
-    rect(this.x - 40, this.y - 10, 10, 5);
-    rect(this.x - 40, this.y + 5, 5);
-    rect(this.x - 35, this.y + 10, 15, 5);
-    rect(this.x - 30, this.y - 15, 5);
-    rect(this.x - 25, this.y - 20, 15, 5);
-    rect(this.x - 20, this.y + 5, 10, 5);
-    rect(this.x - 10, this.y - 25, 15, 5);
-    rect(this.x - 10, this.y + 10, 20, 5);
-    rect(this.x + 5, this.y - 20, 15, 5);
-    rect(this.x + 10, this.y + 15, 5);
-    rect(this.x + 15, this.y + 10, 15, 5);
-    rect(this.x + 20, this.y - 15, 5);
-    rect(this.x + 25, this.y - 10, 10, 5);
-    rect(this.x + 30, this.y + 5, 5);
-    rect(this.x + 35, this.y - 5, 5, 10);
-    //TRANSLUCENT ARMS FROM LEFT TO RIGHT
+    rect(x - 45, y - 15, 5, 10);
+    rect(x - 40, y - 20, 25, 5);
+    rect(x - 40, y - 5, 5);
+    rect(x - 35, y, 5);
+    rect(x - 35, y + 15, 5, 20);
+    rect(x - 30, y + 5, 5, 10);
+    rect(x - 30, y + 35, 20, 5);
+    rect(x - 20, y - 25, 5);
+    rect(x - 15, y - 35, 5, 10);
+    rect(x - 10, y - 40, 5);
+    rect(x - 10, y + 30, 5);
+    rect(x - 5, y - 45, 10, 5);
+    rect(x - 5, y + 25, 10, 5);
+    rect(x + 5, y - 40, 5);
+    rect(x + 5, y + 30, 5);
+    rect(x + 10, y - 35, 5, 10);
+    rect(x + 10, y + 35, 20, 5);
+    rect(x + 15, y - 25, 5);
+    rect(x + 15, y - 20, 25, 5);
+    rect(x + 25, y + 5, 5, 10);
+    rect(x + 30, y, 5);
+    rect(x + 30, y + 15, 5, 20);
+    rect(x + 35, y - 5, 5);
+    rect(x + 40, y - 15, 5, 10);
+  } else if (version === 2) {
+    if (colouredIn === true) {
+      push();
+      fill(255, 255, 255, 190);
+      rect(x - 20, y - 5, 5);
+      rect(x + 10, y - 5, 5);
+      rect(x - 5, y - 35, 5, 65);
+      rect(x - 15, y - 20, 10, 35);
+      rect(x, y - 20, 10, 35);
+      pop();
+    }
+    rect(x - 30, y - 5, 10, 5);
+    rect(x - 20, y - 10, 5);
+    rect(x - 20, y, 5);
+    rect(x - 15, y - 20, 5, 10);
+    rect(x - 15, y + 5, 5, 10);
+    rect(x - 10, y - 35, 5, 15);
+    rect(x - 10, y + 15, 5, 15);
+    rect(x - 5, y - 45, 5, 10);
+    rect(x - 5, y + 30, 5, 10);
+    rect(x, y - 35, 5, 15);
+    rect(x, y + 15, 5, 15);
+    rect(x + 5, y - 20, 5, 10);
+    rect(x + 5, y + 5, 5, 10);
+    rect(x + 10, y - 10, 5);
+    rect(x + 10, y, 5);
+    rect(x + 15, y - 5, 10, 5);
+  } else if (version === 3) {
+    rect(x - 10, y - 5, 15, 5);
+    rect(x - 5, y - 10, 5, 15);
+  }
+  pop();
+}
+
+function sprite(x, y) {
+  push();
+  //BODY
+  rect(x - 35, y - 15, 5);
+  rect(x - 35, y - 5, 5);
+  rect(x - 35, y + 5, 5);
+  rect(x - 30, y - 25, 5);
+  rect(x - 30, y - 15, 5, 25);
+  rect(x - 30, y + 15, 5);
+  rect(x - 25, y - 30, 5);
+  rect(x - 25, y - 20, 5);
+  rect(x - 25, y + 10, 5);
+  rect(x - 25, y + 20, 5);
+  rect(x - 20, y - 35, 5);
+  rect(x - 20, y - 25, 5);
+  rect(x - 20, y + 15, 5);
+  rect(x - 15, y - 30, 30, 5);
+  rect(x - 15, y + 20, 30, 5);
+  rect(x - 15, y + 25, 5);
+  rect(x - 10, y - 35, 5);
+  rect(x - 5, y + 25, 5);
+  rect(x, y - 35, 5);
+  rect(x + 5, y + 25, 5);
+  rect(x + 10, y - 35, 5);
+  rect(x + 15, y - 25, 5);
+  rect(x + 15, y + 15, 5);
+  rect(x + 15, y + 25, 5);
+  rect(x + 20, y - 30, 5);
+  rect(x + 20, y - 20, 5);
+  rect(x + 20, y + 10, 5);
+  rect(x + 20, y + 20, 5);
+  rect(x + 25, y - 25, 5);
+  rect(x + 25, y - 15, 5, 25);
+  rect(x + 25, y + 15, 5);
+  rect(x + 30, y - 15, 5);
+  rect(x + 30, y - 5, 5);
+  rect(x + 30, y + 5, 5);
+  //EYES
+  rect(x - 20, y - 10, 10, 15);
+  rect(x - 10, y - 10, 5, 15);
+  push();
+  fill(0);
+  rect(x - 10, y - 5, 5);
+  pop();
+  rect(x + 5, y - 10, 5, 15);
+  rect(x + 10, y - 10, 10, 15);
+  push();
+  fill(0);
+  rect(x + 5, y - 5, 5);
+  pop();
+  pop();
+}
+
+function jellyfish(x, y, colouredIn) {
+  push();
+  if (colouredIn === true) {
     push();
-    //ONE
-    fill(255, 255, 255, 50);
-    rect(this.x - 40, this.y + 10, 5, 10);
-    rect(this.x - 45, this.y + 20, 20, 10);
-    rect(this.x - 50, this.y + 30, 20, 15);
-    rect(this.x - 40, this.y + 45, 5);
-    rect(this.x - 35, this.y + 50, 5);
-    //TWO
-    rect(this.x + 30, this.y + 10, 5);
-    rect(this.x + 15, this.y + 15, 20, 5);
-    rect(this.x + 10, this.y + 20, 20, 5);
-    rect(this.x + 5, this.y + 25, 25, 5);
-    rect(this.x, this.y + 30, 25, 10);
-    rect(this.x - 5, this.y + 40, 25, 15);
-    rect(this.x - 5, this.y + 55, 20, 5);
-    rect(this.x, this.y + 60, 15, 10);
-    rect(this.x + 5, this.y + 70, 15, 10);
-    rect(this.x + 10, this.y + 80, 15, 5);
-    rect(this.x + 15, this.y + 85, 10);
-    rect(this.x + 15, this.y + 95, 5, 10);
-    rect(this.x + 10, this.y + 105, 5);
-    //THREE
-    rect(this.x - 30, this.y + 15, 5);
-    rect(this.x - 30, this.y + 75, 5, 35);
-    rect(this.x - 25, this.y + 15, 5, 10);
-    rect(this.x - 25, this.y + 60, 5, 40);
-    rect(this.x - 25, this.y + 110, 5, 10);
-    rect(this.x - 20, this.y + 10, 5, 30);
-    rect(this.x - 20, this.y + 50, 5, 35);
-    rect(this.x - 15, this.y + 10, 5, 70);
-    rect(this.x - 10, this.y + 20, 5, 55);
-    rect(this.x - 5, this.y + 30, 5, 35);
-    rect(this.x, this.y + 35, 5, 20);
-    //FOUR
-    rect(this.x + 20, this.y + 60, 5, 10);
-    rect(this.x + 25, this.y + 15, 5);
-    rect(this.x + 25, this.y + 35, 5, 15);
-    rect(this.x + 25, this.y + 55, 5);
-    rect(this.x + 30, this.y + 10, 5, 45);
-    rect(this.x + 35, this.y + 5, 5, 45);
-    rect(this.x + 40, this.y + 15, 5, 30);
-    rect(this.x + 45, this.y + 20, 5, 15);
-    pop();
-    //TENTACLES FROM LEFT TO RIGHT:
-    //ONE
-    rect(this.x - 45, this.y + 40, 5, 10);
-    rect(this.x - 45, this.y + 105, 5);
-    rect(this.x - 40, this.y + 25, 5, 15);
-    rect(this.x - 40, this.y + 50, 5, 20);
-    rect(this.x - 40, this.y + 100, 5);
-    rect(this.x - 35, this.y + 15, 5, 10);
-    rect(this.x - 35, this.y + 70, 5, 10);
-    rect(this.x - 35, this.y + 90, 5, 10);
-    rect(this.x - 30, this.y + 80, 5, 10);
-    //TWO
-    rect(this.x - 20, this.y + 20, 5, 10);
-    rect(this.x - 15, this.y + 15, 5);
-    rect(this.x - 15, this.y + 30, 5);
-    rect(this.x - 15, this.y + 65, 5, 15);
-    rect(this.x - 10, this.y + 35, 5, 15);
-    rect(this.x - 10, this.y + 60, 5);
-    rect(this.x - 10, this.y + 80, 5, 10);
-    rect(this.x - 10, this.y + 95, 5, 10);
-    rect(this.x - 5, this.y + 50, 5, 10);
-    rect(this.x - 5, this.y + 90, 5);
-    rect(this.x - 5, this.y + 105, 5);
-    rect(this.x - 5, this.y + 115, 5, 10);
-    //THREE
-    rect(this.x, this.y + 75, 5, 15);
-    rect(this.x, this.y + 95, 5, 20);
-    rect(this.x + 5, this.y + 15, 5, 10);
-    rect(this.x + 5, this.y + 55, 5, 20);
-    rect(this.x + 5, this.y + 115, 5);
-    rect(this.x + 10, this.y + 25, 5);
-    rect(this.x + 10, this.y + 40, 5, 15);
-    rect(this.x + 10, this.y + 120, 5);
-    rect(this.x + 15, this.y + 30, 5, 10);
-    //FOUR
-    rect(this.x + 20, this.y + 15, 5);
-    rect(this.x + 25, this.y + 20, 5, 20);
-    rect(this.x + 25, this.y + 80, 5, 10);
-    rect(this.x + 30, this.y + 40, 5, 10);
-    rect(this.x + 30, this.y + 65, 5, 15);
-    rect(this.x + 30, this.y + 90, 5, 10);
-    rect(this.x + 35, this.y + 50, 5, 15);
-    rect(this.x + 35, this.y + 100, 5, 15);
-    rect(this.x + 40, this.y + 115, 5);
+    fill(255, 255, 255, 190);
+    rect(x + 10, y + 10, 5);
+    rect(x - 40, y - 10, 75, 20);
+    rect(x - 25, y - 15, 45, 5);
+    rect(x - 10, y - 20, 15, 5);
     pop();
   }
+  //HEAD
+  rect(x - 45, y - 5, 5, 10);
+  rect(x - 40, y - 10, 10, 5);
+  rect(x - 40, y + 5, 5);
+  rect(x - 35, y + 10, 15, 5);
+  rect(x - 30, y - 15, 5);
+  rect(x - 25, y - 20, 15, 5);
+  rect(x - 20, y + 5, 10, 5);
+  rect(x - 10, y - 25, 15, 5);
+  rect(x - 10, y + 10, 20, 5);
+  rect(x + 5, y - 20, 15, 5);
+  rect(x + 10, y + 15, 5);
+  rect(x + 15, y + 10, 15, 5);
+  rect(x + 20, y - 15, 5);
+  rect(x + 25, y - 10, 10, 5);
+  rect(x + 30, y + 5, 5);
+  rect(x + 35, y - 5, 5, 10);
+  //TRANSLUCENT ARMS FROM LEFT TO RIGHT
+  push();
+  //ONE
+  fill(255, 255, 255, 50);
+  rect(x - 40, y + 10, 5, 10);
+  rect(x - 45, y + 20, 20, 10);
+  rect(x - 50, y + 30, 20, 15);
+  rect(x - 40, y + 45, 5);
+  rect(x - 35, y + 50, 5);
+  //TWO
+  rect(x + 30, y + 10, 5);
+  rect(x + 15, y + 15, 20, 5);
+  rect(x + 10, y + 20, 20, 5);
+  rect(x + 5, y + 25, 25, 5);
+  rect(x, y + 30, 25, 10);
+  rect(x - 5, y + 40, 25, 15);
+  rect(x - 5, y + 55, 20, 5);
+  rect(x, y + 60, 15, 10);
+  rect(x + 5, y + 70, 15, 10);
+  rect(x + 10, y + 80, 15, 5);
+  rect(x + 15, y + 85, 10);
+  rect(x + 15, y + 95, 5, 10);
+  rect(x + 10, y + 105, 5);
+  //THREE
+  rect(x - 30, y + 15, 5);
+  rect(x - 30, y + 75, 5, 35);
+  rect(x - 25, y + 15, 5, 10);
+  rect(x - 25, y + 60, 5, 40);
+  rect(x - 25, y + 110, 5, 10);
+  rect(x - 20, y + 10, 5, 30);
+  rect(x - 20, y + 50, 5, 35);
+  rect(x - 15, y + 10, 5, 70);
+  rect(x - 10, y + 20, 5, 55);
+  rect(x - 5, y + 30, 5, 35);
+  rect(x, y + 35, 5, 20);
+  //FOUR
+  rect(x + 20, y + 60, 5, 10);
+  rect(x + 25, y + 15, 5);
+  rect(x + 25, y + 35, 5, 15);
+  rect(x + 25, y + 55, 5);
+  rect(x + 30, y + 10, 5, 45);
+  rect(x + 35, y + 5, 5, 45);
+  rect(x + 40, y + 15, 5, 30);
+  rect(x + 45, y + 20, 5, 15);
+  pop();
+  //TENTACLES FROM LEFT TO RIGHT:
+  //ONE
+  rect(x - 45, y + 40, 5, 10);
+  rect(x - 45, y + 105, 5);
+  rect(x - 40, y + 25, 5, 15);
+  rect(x - 40, y + 50, 5, 20);
+  rect(x - 40, y + 100, 5);
+  rect(x - 35, y + 15, 5, 10);
+  rect(x - 35, y + 70, 5, 10);
+  rect(x - 35, y + 90, 5, 10);
+  rect(x - 30, y + 80, 5, 10);
+  //TWO
+  rect(x - 20, y + 20, 5, 10);
+  rect(x - 15, y + 15, 5);
+  rect(x - 15, y + 30, 5);
+  rect(x - 15, y + 65, 5, 15);
+  rect(x - 10, y + 35, 5, 15);
+  rect(x - 10, y + 60, 5);
+  rect(x - 10, y + 80, 5, 10);
+  rect(x - 10, y + 95, 5, 10);
+  rect(x - 5, y + 50, 5, 10);
+  rect(x - 5, y + 90, 5);
+  rect(x - 5, y + 105, 5);
+  rect(x - 5, y + 115, 5, 10);
+  //THREE
+  rect(x, y + 75, 5, 15);
+  rect(x, y + 95, 5, 20);
+  rect(x + 5, y + 15, 5, 10);
+  rect(x + 5, y + 55, 5, 20);
+  rect(x + 5, y + 115, 5);
+  rect(x + 10, y + 25, 5);
+  rect(x + 10, y + 40, 5, 15);
+  rect(x + 10, y + 120, 5);
+  rect(x + 15, y + 30, 5, 10);
+  //FOUR
+  rect(x + 20, y + 15, 5);
+  rect(x + 25, y + 20, 5, 20);
+  rect(x + 25, y + 80, 5, 10);
+  rect(x + 30, y + 40, 5, 10);
+  rect(x + 30, y + 65, 5, 15);
+  rect(x + 30, y + 90, 5, 10);
+  rect(x + 35, y + 50, 5, 15);
+  rect(x + 35, y + 100, 5, 15);
+  rect(x + 40, y + 115, 5);
+  pop();
 }
 
-function setup() {
-  createCanvas(1000, 1000);
-  background(0);
-}
+let colouredIn = Math.random();
 
-function draw() {
-  let swirl0 = new Critter(100, 100).swirl(0);
-  let swirl1 = new Critter(200, 100).swirl(1);
-  let star0 = new Critter(300, 100).star(0);
-  let star1 = new Critter(400, 100, true).star(1);
-  let star2 = new Critter(100, 400, true).star(2);
-  let star3 = new Critter(200, 400).star(3);
-  let sprite = new Critter(300, 400).sprite();
-  let jellyfish = new Critter(450, 400, true).jellyfish();
-  swirl0;
-  swirl1;
-  star0;
-  star1;
-  star2;
-  star3;
-  sprite;
-  jellyfish;
-  noLoop();
+class Critter {
+  constructor(x, y, shape, maxSpeed, maxForce) {
+    this.shape = shape;
+    this.position = createVector(x, y);
+    this.acceleration = createVector(0, 0);
+    this.velocity = createVector(0, 0);
+    this.maxSpeed = maxSpeed;
+    this.maxForce = maxForce;
+  }
+
+  follow(desiredDirection) {
+    desiredDirection = desiredDirection.copy();
+    desiredDirection.mult(this.maxSpeed);
+    let steer = p5.Vector.sub(desiredDirection, this.velocity);
+    steer.limit(this.maxForce);
+    this.applyForce(steer);
+  }
+
+  applyForce(force) {
+    this.acceleration.add(force);
+  }
+
+  update() {
+    this.velocity.add(this.acceleration);
+    this.velocity.limit(this.maxSpeed);
+    this.position.add(this.velocity);
+    this.acceleration.mult(0);
+  }
+
+  checkBorders() {
+    if (this.position.x < 0) {
+      this.position.x = 1440;
+    } else if (this.position.x > 1440) {
+      this.position.x = 0;
+    }
+    if (this.position.y < 0) {
+      this.position.y = 825;
+    } else if (this.position.y > 825) {
+      this.position.y = 0;
+    }
+  }
+
+  draw() {
+    push();
+    translate(this.position.x, this.position.y);
+    noStroke();
+    fill(255);
+    scale(0.4);
+    if (this.shape === "swirl0") {
+      swirl(0, 0, 0);
+    } else if (this.shape === "swirl1") {
+      swirl(0, 0, 1);
+    } else if (this.shape === "star0") {
+      star(0, 0, 0);
+    } else if (this.shape === "star1") {
+      if (colouredIn < 0.5) {
+        star(0, 0, 1);
+      } else {
+        star(0, 0, 1, true);
+      }
+    } else if (this.shape === "star2") {
+      if (colouredIn < 0.5) {
+        star(0, 0, 2);
+      } else {
+        star(0, 0, 2, true);
+      }
+    } else if (this.shape === "star3") {
+      star(0, 0, 3);
+    } else if (this.shape === "sprite") {
+      sprite(0, 0);
+    } else if (this.shape === "jellyfish") {
+      if (colouredIn < 0.5) {
+        jellyfish(0, 0);
+      } else {
+        jellyfish(0, 0, true);
+      }
+    }
+    pop();
+  }
 }
 
 export { Critter };
