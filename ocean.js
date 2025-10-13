@@ -5,6 +5,7 @@ import { Critter } from "./critters.js";
 //https://tonejs.github.io/docs/14.9.17/index.html - this website was used to understand Tone.js
 //https://codepen.io/pixelkind/pen/wvRMVwy - the following code was created with the help of this tutorial
 //https://ffd8.github.io/p5.glitch/ - this website was used to understand the p5.glitch library
+//https://codepen.io/pixelkind/pen/XWojVaO - the following code was created with the help of this tutorial
 
 //VARIABLES
 //handpose variables
@@ -65,23 +66,23 @@ function mousePressed(/*change this so if fits with the movement detector later!
 window.mousePressed = mousePressed;
 
 /*---------------SETUP FUNCTIONS-----------------*/
-/* function preload() {
+function preload() {
   handpose = ml5.handPose();
 }
-window.preload = preload; */
+window.preload = preload;
 
 function setup() {
   //basics
   createCanvas(1440, 825);
-  //frameRate(3); //CAN WE DELETE THIS?
+
   //critters & flowfields
   field = generateField();
   generateCritters();
 
-  /*   //video recording & hand detection
+  //video recording & hand detection
   video = createCapture(VIDEO);
   video.hide();
-  handpose.detectStart(video, getHandsData); */
+  handpose.detectStart(video, getHandsData);
 
   //initiate glitch
   glitch = new Glitch();
@@ -89,6 +90,7 @@ function setup() {
 window.setup = setup;
 
 /*----------------HANDPOSE----------------*/
+
 function getHandsData(results) {
   predictions = results;
 }
@@ -103,6 +105,7 @@ function squish() {
       } else if (keypoint.name === "thumb_tip") {
         thumb = keypoint;
       }
+      console.log("poop");
     }
   }
 }
@@ -149,7 +152,7 @@ function glitchThis() {
   glitch.limitBytes(0, 1);
   glitch.randomBytes(5);
   glitch.buildImage();
-  image(glitch.image, 0, 0, 1440, 825);
+  image(glitch.image, 700, 200, 300, 50);
 }
 
 /*---------BACKGROUND DRAW FUNCTIONS---------*/
@@ -324,8 +327,8 @@ function generateCritters() {
       Math.random() * 1440,
       Math.random() * 825,
       random(shapes),
-      4,
-      0.1
+      1,
+      0.025
     );
     critters.push(critter);
   }
@@ -370,7 +373,7 @@ function draw() {
   drawWaterVariation();
 
   //hand tracing - squish critters
-  //squish();
+  squish();
 
   frameRate(20);
   //glitch
