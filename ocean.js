@@ -1,3 +1,4 @@
+import { Critter } from "./critters.js";
 //REFERENCES
 //https://codepen.io/pixelkind/pen/JjwGQgd - the following code was created with the help of this tutorial
 //https://chatgpt.com/share/68e569bc-9108-8003-be50-cb73fb308bed - the following code was created with the help of chatGPT
@@ -22,6 +23,9 @@ const monoSynth = new Tone.MetalSynth().toDestination();
 //time management for water movement and water variation
 let waterTime = 0;
 
+//critter management
+let critters = [];
+
 /*-----------------SOUND SETUP-----------------*/
 //background music
 window.addEventListener("click", () => {
@@ -43,25 +47,28 @@ function mousePressed(/*change this so if fits with the movement detector later!
   monoSynth.triggerAttackRelease("C7", "8n", 0);
   monoSynth.triggerAttackRelease("C6", "8n", 0 + 0.5);
 }
+window.mousePressed = mousePressed;
 
 /*---------------SETUP FUNCTIONS-----------------*/
-/*function preload() {
+/* function preload() {
   handpose = ml5.handPose();
-}*/
+}
+window.preload = preload; */
 
 function setup() {
   //basics
   createCanvas(1440, 825);
-  frameRate(3);
+  //frameRate(3);
 
-  //video recording & hand detection
-  //video = createCapture(VIDEO);
-  //video.hide();
-  //handpose.detectStart(video, getHandsData);
+  /*   //video recording & hand detection
+  video = createCapture(VIDEO);
+  video.hide();
+  handpose.detectStart(video, getHandsData); */
 
   //initiate glitch
-  //glitch = new Glitch();
+  glitch = new Glitch();
 }
+window.setup = setup;
 
 /*----------------HANDPOSE----------------*/
 function getHandsData(results) {
@@ -118,15 +125,16 @@ function drawWaterMovement() {
 
 //glitch function
 function glitchThis() {
+  glitch.resetBytes();
   glitch.loadQuality(0.8);
-  glitch.loadImage(video); //will have to replace "video" with a jpg of our final static bg
-  glitch.randomBytes(2);
+  glitch.loadImage("background.png");
+  glitch.limitBytes(0, 1);
+  glitch.randomBytes(5);
   glitch.buildImage();
-  image(glitch.image, 0, 0, windowWidth, 600);
+  image(glitch.image, 0, 0, 1440, 825);
 }
 
 /*---------BACKGROUND DRAW FUNCTIONS---------*/
-
 function drawCliff1() {
   //cliff
   push();
@@ -278,6 +286,8 @@ function drawBioAlgae() {
   pop();
 }
 
+/*---------CRITTERS DRAW FUNCTIONS---------*/
+
 /*---------------!THE! DRAW FUNCTION----------------*/
 
 function draw() {
@@ -291,11 +301,19 @@ function draw() {
   drawPlants();
   drawBioAlgae();
 
+  push();
+  frameRate(3);
   drawWaterVariation();
+  pop();
 
   //hand tracing - squish critters
-  squish();
+  //squish();
 
   //glitch
   //glitchThis();
+
+  //critters
+  drawCritters();
 }
+window.draw = draw;
+// this shit is necessary so we can use the files as modules & imports work

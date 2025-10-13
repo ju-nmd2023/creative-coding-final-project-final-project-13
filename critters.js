@@ -331,3 +331,5 @@ function draw() {
   jellyfish;
   noLoop();
 }
+
+export { Critter };
