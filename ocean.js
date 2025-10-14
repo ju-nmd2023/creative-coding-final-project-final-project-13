@@ -104,7 +104,7 @@ function getHandsData(results) {
   predictions = results;
 }
 
-function getFingers() {
+function detect() {
   if (detecting === true) {
     // assign variables for thumb & pointer finger
     for (let hand of predictions) {
@@ -441,7 +441,7 @@ function draw() {
   drawWaterVariation();
 
   //hand tracing - squish critters
-  getFingers();
+  detect();
 
   frameRate(20);
   //glitch
