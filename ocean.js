@@ -6,6 +6,8 @@ import { Critter } from "./critters.js";
 //https://codepen.io/pixelkind/pen/wvRMVwy - the following code was created with the help of this tutorial
 //https://ffd8.github.io/p5.glitch/ - this website was used to understand the p5.glitch library
 //https://codepen.io/pixelkind/pen/XWojVaO - the following code was created with the help of this tutorial
+//https://editor.p5js.org/ml5/sketches/W9vFFT5RM - squish(); was created with the help of this tutorial
+//https://editor.p5js.org/Tr4yvon/sketches/fTjWZZLBf - squish(); was created with the help of this tutorial
 
 //VARIABLES
 //handpose variables
@@ -102,57 +104,64 @@ function getHandsData(results) {
   predictions = results;
 }
 
-function squish() {
-  //base code for tracking pointer & thumb
+function getFingers() {
   if (detecting === true) {
     // assign variables for thumb & pointer finger
     for (let hand of predictions) {
       const keypoints = hand.keypoints;
-      for (let keypoint of keypoints) {
-        if (keypoint.name === "index_finger_tip") {
-          pointer = keypoint;
-        } else if (keypoint.name === "thumb_tip") {
-          thumb = keypoint;
-        }
+      pointer = keypoints[8];
+      thumb = keypoints[4];
 
-        //calculate size & position for the captured critter
-        let centerX = (1440 - pointer.x + (1440 - thumb.x)) / 2;
-        let centerY = (pointer.y + thumb.y) / 2;
-        let size = dist(pointer.x, pointer.y, thumb.x, thumb.y);
-
-        //move predetermined victim between fingers
-        let newDirection = createVector(centerX, centerY);
-        victim.maxSpeed = 1;
-        victim.maxForce = 1;
-        victim.acceleration = p5.Vector.sub(newDirection, victim.position);
-        victim.update();
-        victim.checkBorders();
-        victim.draw(victimScale);
-        //once it reaches between fingers,
-        if (
-          victim.position.x <= centerX + 30 &&
-          victim.position.x >= centerX - 30
-        ) {
-          //remove movement
-          victim.position = createVector(centerX, centerY);
-          victim.velocity = createVector(0, 0);
-          victim.acceleration = createVector(0, 0);
-          victim.maxSpeed = 0;
-          //adjust size to pinch motion
-          victimScale = size / 100;
-
-          //when someone pinches, burst critter
-          if (size <= 20) {
-            //REPLACE THE FOLLOWING 4 LINES WITH BURST ANIMATION
-            push();
-            fill(255, 0, 0);
-            ellipse(victim.position.x, victim.position.y, 15);
-            pop();
-          }
-        }
+      if (
+        keypoints[16].y > keypoints[13].y &&
+        keypoints[20].y > keypoints[17].y
+      ) {
+        //case: pinky & ring finger is folded, activate squish
+        return squish();
+      } else {
+        return wave();
       }
     }
   }
+}
+
+function squish() {
+  //calculate size & position for the captured critter
+  let centerX = (1440 - pointer.x + (1440 - thumb.x)) / 2;
+  let centerY = (pointer.y + thumb.y) / 2;
+  let size = dist(pointer.x, pointer.y, thumb.x, thumb.y);
+
+  //move predetermined victim between fingers
+  let newDirection = createVector(centerX, centerY);
+  victim.maxSpeed = 20;
+  victim.maxForce = 5;
+  victim.acceleration = p5.Vector.sub(newDirection, victim.position);
+  victim.update();
+  victim.checkBorders();
+  victim.draw(victimScale);
+  //once it reaches between fingers,
+  if (victim.position.x <= centerX + 30 && victim.position.x >= centerX - 30) {
+    //remove movement
+    victim.position = createVector(centerX, centerY);
+    victim.velocity = createVector(0, 0);
+    victim.acceleration = createVector(0, 0);
+    victim.maxSpeed = 0;
+    //adjust size to pinch motion
+    victimScale = size / 100;
+
+    //when someone pinches, burst critter
+    if (size <= 20) {
+      //REPLACE THE FOLLOWING 4 LINES WITH BURST ANIMATION
+      push();
+      fill(255, 0, 0);
+      ellipse(victim.position.x, victim.position.y, 15);
+      pop();
+    }
+  }
+}
+
+function wave() {
+  console.log("iyeah");
 }
 
 function toggleDetection() {
@@ -432,7 +441,7 @@ function draw() {
   drawWaterVariation();
 
   //hand tracing - squish critters
-  squish();
+  getFingers();
 
   frameRate(20);
   //glitch
