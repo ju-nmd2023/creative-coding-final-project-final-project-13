@@ -12,8 +12,9 @@ import { Critter } from "./critters.js";
 let video;
 let handpose;
 let predictions = [];
-let pointer;
-let thumb;
+let pointer = false;
+let thumb = false;
+let detecting = false;
 
 //glitch variables
 let glitch;
@@ -41,6 +42,8 @@ let shapes = [
 ];
 let field;
 let critters = [];
+let victim;
+let victimScale = 0.4;
 
 /*-----------------SOUND SETUP-----------------*/
 //background music
@@ -62,6 +65,9 @@ window.addEventListener("load", () => {
 function mousePressed(/*change this so if fits with the movement detector later!!*/) {
   monoSynth.triggerAttackRelease("C7", "8n", 0);
   monoSynth.triggerAttackRelease("C6", "8n", 0 + 0.5);
+
+  //hand detection start/stop at mouseclick
+  toggleDetection();
 }
 window.mousePressed = mousePressed;
 
@@ -80,9 +86,10 @@ function setup() {
   generateCritters();
 
   //video recording & hand detection
-  video = createCapture(VIDEO);
+  video = createCapture(VIDEO, { flipped: true });
+  video.size(1440, 825);
+  video.position(0, 0);
   video.hide();
-  handpose.detectStart(video, getHandsData);
 
   //initiate glitch
   glitch = new Glitch();
@@ -97,16 +104,65 @@ function getHandsData(results) {
 
 function squish() {
   //base code for tracking pointer & thumb
-  for (let hand of predictions) {
-    const keypoints = hand.keypoints;
-    for (let keypoint of keypoints) {
-      if (keypoint.name === "index_finger_tip") {
-        pointer = keypoint;
-      } else if (keypoint.name === "thumb_tip") {
-        thumb = keypoint;
+  if (detecting === true) {
+    // assign variables for thumb & pointer finger
+    for (let hand of predictions) {
+      const keypoints = hand.keypoints;
+      for (let keypoint of keypoints) {
+        if (keypoint.name === "index_finger_tip") {
+          pointer = keypoint;
+        } else if (keypoint.name === "thumb_tip") {
+          thumb = keypoint;
+        }
+
+        //calculate size & position for the captured critter
+        let centerX = (1440 - pointer.x + (1440 - thumb.x)) / 2;
+        let centerY = (pointer.y + thumb.y) / 2;
+        let size = dist(pointer.x, pointer.y, thumb.x, thumb.y);
+
+        //move predetermined victim between fingers
+        let newDirection = createVector(centerX, centerY);
+        victim.maxSpeed = 1;
+        victim.maxForce = 1;
+        victim.acceleration = p5.Vector.sub(newDirection, victim.position);
+        victim.update();
+        victim.checkBorders();
+        victim.draw(victimScale);
+        //once it reaches between fingers,
+        if (
+          victim.position.x <= centerX + 30 &&
+          victim.position.x >= centerX - 30
+        ) {
+          //remove movement
+          victim.position = createVector(centerX, centerY);
+          victim.velocity = createVector(0, 0);
+          victim.acceleration = createVector(0, 0);
+          victim.maxSpeed = 0;
+          //adjust size to pinch motion
+          victimScale = size / 100;
+
+          //when someone pinches, burst critter
+          if (size <= 20) {
+            //REPLACE THE FOLLOWING 4 LINES WITH BURST ANIMATION
+            push();
+            fill(255, 0, 0);
+            ellipse(victim.position.x, victim.position.y, 15);
+            pop();
+          }
+        }
       }
-      console.log("poop");
     }
+  }
+}
+
+function toggleDetection() {
+  //start & stop hand detection
+  if (detecting === true) {
+    handpose.detectStop();
+    detecting = false;
+  } else {
+    handpose.detectStart(video, getHandsData);
+    detecting = true;
   }
 }
 
@@ -332,6 +388,9 @@ function generateCritters() {
     );
     critters.push(critter);
   }
+  //future victim
+  victim = random(critters);
+  critters.splice(critters.indexOf(victim));
 }
 
 function drawCritters() {
@@ -352,7 +411,7 @@ function drawCritters() {
     critter.follow(desiredDirection);
     critter.update();
     critter.checkBorders();
-    critter.draw();
+    critter.draw(0.4);
   }
 }
 

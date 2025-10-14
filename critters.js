@@ -335,12 +335,12 @@ class Critter {
     }
   }
 
-  draw() {
+  draw(scaleFactor) {
     push();
     translate(this.position.x, this.position.y);
     noStroke();
     fill(255);
-    scale(0.4);
+    scale(scaleFactor);
     if (this.shape === "swirl0") {
       swirl(0, 0, 0);
     } else if (this.shape === "swirl1") {
