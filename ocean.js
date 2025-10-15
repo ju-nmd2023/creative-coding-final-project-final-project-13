@@ -1,4 +1,6 @@
 import { Critter } from "./critters.js";
+import { Squish } from "./squishCritter.js";
+
 //REFERENCES
 //https://codepen.io/pixelkind/pen/JjwGQgd - the following code was created with the help of this tutorial
 //https://chatgpt.com/share/68e569bc-9108-8003-be50-cb73fb308bed - the following code was created with the help of chatGPT
@@ -113,8 +115,8 @@ function detect() {
       thumb = keypoints[4];
 
       if (
-        keypoints[16].y > keypoints[13].y &&
-        keypoints[20].y > keypoints[17].y
+        keypoints[16].y > keypoints[14].y &&
+        keypoints[20].y > keypoints[18].y
       ) {
         //case: pinky & ring finger is folded, activate squish
         return squish();
@@ -124,6 +126,17 @@ function detect() {
     }
   }
 }
+//PARTICLES/EXPLOADING STAR FUNCTIONS
+function squishThis(x, y) {
+  for (let i = 0; i < 700; i++) {
+    const squishX = x + random(-10, 10);
+    const squishY = y + random(-10, 10);
+    const squishing = new Squish(squishX, squishY);
+    imSquished.push(squishing);
+  }
+}
+
+let imSquished = [];
 
 function squish() {
   //calculate size & position for the captured critter
@@ -150,12 +163,8 @@ function squish() {
     victimScale = size / 100;
 
     //when someone pinches, burst critter
-    if (size <= 20) {
-      //REPLACE THE FOLLOWING 4 LINES WITH BURST ANIMATION
-      push();
-      fill(255, 0, 0);
-      ellipse(victim.position.x, victim.position.y, 15);
-      pop();
+    if (size <= 75) {
+      squishThis(centerX, centerY);
     }
   }
 }
@@ -449,6 +458,18 @@ function draw() {
 
   //critters
   drawCritters();
+
+  //when squished I'll expload!
+  push();
+  for (let squishing of imSquished) {
+    squishing.update();
+    squishing.draw();
+
+    if (squishing.evap()) {
+      imSquished.splice(imSquished.indexOf(squishing));
+    }
+  }
+  pop();
 }
 window.draw = draw;
 // this shit is necessary so we can use the files as modules & imports work
