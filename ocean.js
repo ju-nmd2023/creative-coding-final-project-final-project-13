@@ -24,7 +24,8 @@ let detecting = false;
 let glitch;
 
 //sound effect variables
-const monoSynth = new Tone.MetalSynth().toDestination();
+const autofilter = new Tone.PingPongDelay("7n", 0.2).toDestination();
+const polySynth = new Tone.MonoSynth().connect(autofilter);
 
 //time management for water movement and water variation
 let waterTime = 0;
@@ -67,8 +68,10 @@ window.addEventListener("load", () => {
 });
 
 function mousePressed(/*change this so if fits with the movement detector later!!*/) {
-  monoSynth.triggerAttackRelease("C7", "8n", 0);
-  monoSynth.triggerAttackRelease("C6", "8n", 0 + 0.5);
+  polySynth.triggerAttackRelease("F5", "8n");
+  setTimeout(() => {
+    polySynth.triggerAttackRelease("D5", "8n");
+  }, 295);
 
   //hand detection start/stop at mouseclick
   toggleDetection();
