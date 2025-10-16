@@ -24,8 +24,6 @@ let detecting = false;
 
 //glitch variables
 let glitch;
-let timedGlitch;
-let glitching = true;
 
 //sound effect variables
 const autofilter = new Tone.PingPongDelay("7n", 0.2).toDestination();
@@ -57,6 +55,10 @@ let victimScale = 0.4;
 //speed indicator variables
 let barY = 562.5;
 let pinching = false;
+
+//slow update
+let slowLayer;
+
 //#endregion
 
 //#region /*-----------------SOUND SETUP-----------------*/
@@ -87,6 +89,9 @@ function setup() {
   //basics
   createCanvas(1440, 825);
 
+  //slower update
+  slowLayer = createGraphics(1440, 825);
+
   //critters & flowfields
   field = generateField();
   generateCritters();
@@ -99,7 +104,6 @@ function setup() {
 
   //initiate glitch
   glitch = new Glitch();
-  timedGlitch = window.setInterval(newGlitch(), 5000, true, false);
 }
 window.setup = setup;
 //#endregion
@@ -111,8 +115,10 @@ button.addEventListener("click", () => {
   //change button appearance
   if (detecting === false) {
     button.setAttribute("class", "startB");
+    button.innerText = "Start Detection!";
   } else {
     button.setAttribute("class", "stopB");
+    button.innerText = "Stop Detection!";
   }
 });
 
@@ -256,23 +262,23 @@ function toggleDetection() {
 
 // #region /*---------------OTHER FUNCTIONS----------------*/
 //water variation function - TRYING TO MAKE IT WORK WITH THE PERLIN NOISE :(
-function drawWaterVariation() {
-  push();
-  noStroke();
+function drawWaterVariation(g) {
+  g.push();
+  g.noStroke();
   const waterVariationFields = 200;
   const variationWidth = 1440 / waterVariationFields;
   const variationHeight = 825 / waterVariationFields;
   for (let xVariation = 0; xVariation < waterVariationFields; xVariation++) {
     for (let yVariation = 0; yVariation < waterVariationFields; yVariation++) {
       if (Math.random() < 0.0001) {
-        fill(0, 0, 255, 50);
+        g.fill(0, 0, 255, 50);
       } else {
-        noFill();
+        g.noFill();
       }
-      ellipse(xVariation * variationWidth, yVariation * variationHeight, 10);
+      g.ellipse(xVariation * variationWidth, yVariation * variationHeight, 10);
     }
   }
-  pop();
+  g.pop();
 }
 
 //perlin noise - make the water move
@@ -317,12 +323,7 @@ function drawSpeedBar(indicatorY) {
 }
 
 //glitch function
-function newGlitch(value) {
-  glitching = value;
-  console.log(value);
-}
-
-function drawGlitch() {
+function drawGlitch(g) {
   glitch.resetBytes();
   glitch.loadQuality(0.8);
   glitch.loadImage("white.png");
@@ -330,16 +331,32 @@ function drawGlitch() {
   glitch.randomBytes(5);
   glitch.buildImage();
   for (let i = 0; i < 100; i++) {
-    let x = Math.ceil(Math.random() * 1440 - 200);
+    let x = Math.ceil(Math.random() * 1640 - 200);
     let y = Math.ceil(Math.random() * 875 - 50);
     let width = Math.ceil(Math.random() * 450);
     let height = Math.ceil(Math.random() * 35);
-    push();
-    tint(255, 100);
-    image(glitch.image, x, y, width, height);
-    pop();
+    if (x < 75 || x > 1300) {
+      g.push();
+      if (Math.random() < 0.5) {
+        g.tint(0, 90);
+      } else {
+        g.tint(255, 15);
+      }
+      g.image(glitch.image, x, y, width, height);
+      g.pop();
+    } else if (y < 75 || y > 775) {
+      g.push();
+      if (Math.random() < 0.5) {
+        g.tint(0, 90);
+      } else {
+        g.tint(255, 15);
+      }
+      g.image(glitch.image, x, y, width, height);
+      g.pop();
+    }
   }
 }
+
 //#endregion
 
 //#region /*---------BACKGROUND DRAW FUNCTIONS---------*/
@@ -741,6 +758,14 @@ function draw() {
   background(0, 0, 0);
   drawWaterMovement();
 
+  //update slow layer every 20 frames (~3fps)
+  if (frameCount % 20 === 0) {
+    slowLayer.clear();
+    slowLayer.push();
+    drawWaterVariation(slowLayer);
+    slowLayer.pop();
+  }
+
   //background
   drawCliff1();
   drawCliff2();
@@ -750,14 +775,16 @@ function draw() {
   drawBlinkingEyes();
   drawHighlight();
 
-  //frameRate(3);
-
-  drawWaterVariation();
   //glitch
-  if (glitching === true) {
-    drawGlitch();
-    glitching = false;
+  if (frameCount % 20 === 0) {
+    slowLayer.clear();
+    slowLayer.push();
+    drawGlitch(slowLayer);
+    slowLayer.pop();
   }
+
+  //draw archived layer
+  image(slowLayer, 0, 0);
 
   //hand tracking
   detect();
@@ -784,7 +811,3 @@ function draw() {
 }
 window.draw = draw;
 // this shit is necessary so we can use the files as modules & imports work
-
-/*---------------TO DO LIST FOR MEETING----------------*/
-//Fix frameCount - bubbles and eyes
-//Add the sound to the squish action
