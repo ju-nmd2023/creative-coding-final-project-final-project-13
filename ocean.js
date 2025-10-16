@@ -10,6 +10,7 @@ import { Squish } from "./squishCritter.js";
 //https://codepen.io/pixelkind/pen/XWojVaO - the following code was created with the help of this tutorial
 //https://editor.p5js.org/ml5/sketches/W9vFFT5RM - squishVictim(); was created with the help of this tutorial
 //https://editor.p5js.org/Tr4yvon/sketches/fTjWZZLBf - squishVictim(); was created with the help of this tutorial
+//https://chatgpt.com/share/68f1512b-0734-800d-8159-ec2683b4b9f3 - the following code was created with the help of ChatGPT
 //#endregion
 
 //#region VARIABLES
@@ -115,10 +116,8 @@ button.addEventListener("click", () => {
   //change button appearance
   if (detecting === false) {
     button.setAttribute("class", "startB");
-    button.innerText = "Start Detection!";
   } else {
     button.setAttribute("class", "stopB");
-    button.innerText = "Stop Detection!";
   }
 });
 
@@ -128,6 +127,8 @@ function getHandsData(results) {
 
 function detect() {
   if (detecting === true) {
+    //change button text
+    button.innerText = "Stop Detection!";
     // assign variables for thumb & pointer finger
     for (let hand of predictions) {
       const keypoints = hand.keypoints;
@@ -156,6 +157,8 @@ function detect() {
         }
       }
     }
+  } else {
+    button.innerText = "Start Detection!";
   }
 }
 //#endregion
@@ -262,20 +265,22 @@ function toggleDetection() {
 
 // #region /*---------------OTHER FUNCTIONS----------------*/
 //water variation function - TRYING TO MAKE IT WORK WITH THE PERLIN NOISE :(
-function drawWaterVariation() {
-  push();
-  noStroke();
+function drawWaterVariation(g) {
+  g.push();
+  g.noStroke();
   const waterVariationFields = 10;
   const variationWidth = 1440 / waterVariationFields;
   const variationHeight = 825 / waterVariationFields;
   for (let xVariation = 0; xVariation < waterVariationFields; xVariation++) {
     for (let yVariation = 0; yVariation < waterVariationFields; yVariation++) {
       if (Math.random() < 0.0001) {
-        fill(0, 0, 255, 100);
-      } else {
-        g.noFill();
+        g.fill(0, 0, 255, 100);
+        g.ellipse(
+          xVariation * variationWidth,
+          yVariation * variationHeight,
+          10
+        );
       }
-      g.ellipse(xVariation * variationWidth, yVariation * variationHeight, 10);
     }
   }
   g.pop();
@@ -754,6 +759,7 @@ function drawCritters() {
 /*---------------!THE! DRAW FUNCTION----------------*/
 
 function draw() {
+  frameRate(30);
   //basics
   background(0, 0, 0);
   drawWaterMovement();
@@ -775,9 +781,6 @@ function draw() {
   drawBlinkingEyes();
   drawHighlight();
 
-  frameRate(30);
-
-  drawWaterVariation();
   //glitch
   if (frameCount % 20 === 0) {
     slowLayer.clear();
