@@ -21,11 +21,11 @@ section {
 
 .inText {
   margin-top: 0em;
-  margin-bottom: 0.3em;
+  margin-bottom: 0.2em;
+  text-align: center;
   color: #fff;
-  font-size: 1.3em;
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
-  
+  font-size: 1.5em;
+  font-family: "Jersey 15", sans-serif;
 }
 
 .startB {
@@ -33,10 +33,12 @@ section {
   background-color: #fff;
   color: black;
   border-width: 0px;
-  border-radius: 50px;
+  border-radius: 5px;
   align-self: center;
-  padding: 0.5em 1em;
-  margin: 0.3em;
+  padding: 0.5em 1.5em;
+  margin: 0.4em;
+  font-family: "Jersey 15", sans-serif;
+  font-size: 1.2em;
 }
 
 .startB:hover {
@@ -50,10 +52,12 @@ section {
   color: rgb(0, 100, 255);
   background-color: #fff;
   border-width: 0px;
-  border-radius: 50px;
+  border-radius: 5px;
   align-self: center;
-  padding: 0.5em 1em;
-  margin:0;
+  padding: 0.5em 1.5em;
+  margin: 0.4em;
+  font-family: "Jersey 15", sans-serif;
+  font-size: 1.2em;
 }
 
 .stopB:hover {

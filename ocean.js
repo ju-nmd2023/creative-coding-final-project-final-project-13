@@ -129,11 +129,11 @@ function detect() {
       thumb = keypoints[4];
       //draw tip trackers for UI
       push();
-      fill(100, 230, 230, 190);
-      stroke(100, 230, 230);
+      fill(10, 35, 20);
+      stroke(255, 255, 255);
       strokeWeight(2);
-      ellipse(1440 - pointer.x, pointer.y, 50);
-      ellipse(1440 - thumb.x, thumb.y, 50);
+      ellipse(1440 - pointer.x, pointer.y, 20);
+      ellipse(1440 - thumb.x, thumb.y, 20);
       pop();
 
       //case: pinky & ring finger is folded, activate squish
@@ -259,7 +259,7 @@ function toggleDetection() {
 function drawWaterVariation() {
   push();
   noStroke();
-  const waterVariationFields = 200;
+  const waterVariationFields = 50;
   const variationWidth = 1440 / waterVariationFields;
   const variationHeight = 825 / waterVariationFields;
   for (let xVariation = 0; xVariation < waterVariationFields; xVariation++) {
@@ -281,7 +281,7 @@ function drawWaterMovement() {
     for (let y = 0; y < height; y += 10) {
       let waterNoise = noise(0.01 * x, 0.01 * y, waterTime);
       noStroke();
-      fill(10, 10, 0 + waterNoise * 90);
+      fill(10, 10, 0 + waterNoise * 200);
       rect(x, y, 10, 10);
     }
   }
@@ -291,27 +291,27 @@ function drawWaterMovement() {
 //speed bar visual
 function drawSpeedBar(indicatorY) {
   push();
-  fill(100, 230, 230);
+  fill(255, 255, 255);
   noStroke();
   //plus
-  rect(1145, 28.75, 15, 45);
-  rect(1130, 43.75, 45, 15);
+  rect(1145, 45, 10, 45);
+  rect(1127.5, 60.5, 45, 10);
   //bar itself
-  rect(1115, 102.5, 75, 10);
-  rect(1145, 112.5, 15, 600);
-  rect(1115, 712.5, 75, 10);
+  rect(1125, 102.5, 50, 10);
+  rect(1145, 112.5, 10, 600);
+  rect(1125, 712.5, 50, 10);
   //minus
-  rect(1130, 766.25, 45, 15);
+  rect(1127.5, 736, 45, 10);
   //indicator
   stroke(255);
   strokeWeight(5);
   //set limit so bar doesn't leave spectrum
   if (barY > 112.5 && barY < 712.5) {
-    rect(1122.5, indicatorY, 60, 30);
+    rect(1130, indicatorY, 40, 10);
   } else if (barY < 112.5) {
-    rect(1122.5, 112.5, 60, 30);
+    rect(1130, 112.5, 60, 30);
   } else if (barY > 712.5) {
-    rect(1122.5, 712.5, 60, 30);
+    rect(1130, 712.5, 60, 30);
   }
   pop();
 }
@@ -382,7 +382,7 @@ function drawCliff2() {
   //cliff - middle
   push();
   beginShape();
-  fill(0, 0, 40);
+  fill(0, 0, 0);
   noStroke();
   vertex(300, 0);
   vertex(950, 0);
@@ -784,7 +784,3 @@ function draw() {
 }
 window.draw = draw;
 // this shit is necessary so we can use the files as modules & imports work
-
-/*---------------TO DO LIST FOR MEETING----------------*/
-//Fix frameCount - bubbles and eyes
-//Add the sound to the squish action
