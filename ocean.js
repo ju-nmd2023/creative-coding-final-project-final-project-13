@@ -6,20 +6,23 @@ import { Critter } from "./critters.js";
 //https://codepen.io/pixelkind/pen/wvRMVwy - the following code was created with the help of this tutorial
 //https://ffd8.github.io/p5.glitch/ - this website was used to understand the p5.glitch library
 //https://codepen.io/pixelkind/pen/XWojVaO - the following code was created with the help of this tutorial
-//https://editor.p5js.org/ml5/sketches/W9vFFT5RM - squish(); was created with the help of this tutorial
-//https://editor.p5js.org/Tr4yvon/sketches/fTjWZZLBf - squish(); was created with the help of this tutorial
+//https://editor.p5js.org/ml5/sketches/W9vFFT5RM - squishVictim(); was created with the help of this tutorial
+//https://editor.p5js.org/Tr4yvon/sketches/fTjWZZLBf - squishVictim(); was created with the help of this tutorial
 
-//VARIABLES
+//#region VARIABLES
 //handpose variables
+const button = document.getElementById("button");
 let video;
 let handpose;
 let predictions = [];
-let pointer = false;
-let thumb = false;
+let pointer;
+let thumb;
 let detecting = false;
 
 //glitch variables
 let glitch;
+let timedGlitch;
+let glitching = true;
 
 //sound effect variables
 const monoSynth = new Tone.MetalSynth().toDestination();
@@ -44,8 +47,13 @@ let shapes = [
 ];
 let field;
 let critters = [];
-let victim;
+let victims = [];
 let victimScale = 0.4;
+
+//speed indicator variables
+let barY = 562.5;
+let pinching = false;
+//#endregion
 
 /*-----------------SOUND SETUP-----------------*/
 //background music
@@ -67,9 +75,6 @@ window.addEventListener("load", () => {
 function mousePressed(/*change this so if fits with the movement detector later!!*/) {
   monoSynth.triggerAttackRelease("C7", "8n", 0);
   monoSynth.triggerAttackRelease("C6", "8n", 0 + 0.5);
-
-  //hand detection start/stop at mouseclick
-  toggleDetection();
 }
 window.mousePressed = mousePressed;
 
@@ -95,10 +100,21 @@ function setup() {
 
   //initiate glitch
   glitch = new Glitch();
+  timedGlitch = window.setInterval(newGlitch(), 5000, true, false);
 }
 window.setup = setup;
 
 /*----------------HANDPOSE----------------*/
+button.addEventListener("click", () => {
+  //hand detection start/stop at buttonclick
+  toggleDetection();
+  //change button appearance
+  if (detecting === false) {
+    button.setAttribute("class", "startB");
+  } else {
+    button.setAttribute("class", "stopB");
+  }
+});
 
 function getHandsData(results) {
   predictions = results;
@@ -111,22 +127,104 @@ function detect() {
       const keypoints = hand.keypoints;
       pointer = keypoints[8];
       thumb = keypoints[4];
+      //draw tip trackers for UI
+      push();
+      fill(100, 230, 230, 190);
+      stroke(100, 230, 230);
+      strokeWeight(2);
+      ellipse(1440 - pointer.x, pointer.y, 50);
+      ellipse(1440 - thumb.x, thumb.y, 50);
+      pop();
 
+      //case: pinky & ring finger is folded, activate squish
       if (
-        keypoints[16].y > keypoints[13].y &&
-        keypoints[20].y > keypoints[17].y
+        keypoints[16].y > keypoints[14].y &&
+        keypoints[20].y > keypoints[18].y
       ) {
-        //case: pinky & ring finger is folded, activate squish
-        return squish();
-      } else {
-        return wave();
+        if (1440 - pointer.x < 1000) {
+          if (critters.length > 0) {
+            return squish("victim");
+          }
+        } else {
+          return squish("speed");
+        }
       }
     }
   }
 }
 
-function squish() {
+function squish(value) {
   //calculate size & position for the captured critter
+  let centerX = (1440 - pointer.x + (1440 - thumb.x)) / 2;
+  let centerY = (pointer.y + thumb.y) / 2;
+  let size = dist(pointer.x, pointer.y, thumb.x, thumb.y);
+
+  if (value === "victim") {
+    let victim = victims[0];
+
+    //move predetermined victim between fingers
+    let newDirection = createVector(centerX, centerY);
+    victim.maxSpeed = 20;
+    victim.maxForce = 5;
+    victim.acceleration = p5.Vector.sub(newDirection, victim.position);
+    victim.update();
+    victim.checkBorders();
+    victim.draw(victimScale);
+    //once it reaches between fingers,
+    if (
+      victim.position.x <= centerX + 30 &&
+      victim.position.x >= centerX - 30
+    ) {
+      //remove movement
+      victim.position = createVector(centerX, centerY);
+      victim.velocity = createVector(0, 0);
+      victim.acceleration = createVector(0, 0);
+      victim.maxSpeed = 0;
+      //adjust size to pinch motion
+      victimScale = size / 100;
+
+      //when someone pinches, burst critter
+      if (size <= 20) {
+        //REPLACE THE FOLLOWING 4 LINES WITH BURST ANIMATION
+        push();
+        fill(255, 0, 0);
+        ellipse(victim.position.x, victim.position.y, 15);
+        pop();
+        //after burst, assign new victim and automatically turn off detection
+        victims.splice(0);
+        let newVictim = random(critters);
+        victims.push(newVictim);
+        victimScale = 0.4;
+        critters.splice(critters.indexOf(newVictim), 1);
+        return toggleDetection();
+      }
+    }
+  } else if (value === "speed") {
+    //check that person is pinching
+    console.log(size);
+    if (size < 40) {
+      pinching = true;
+      //check person is pinching near bar
+      if (centerY > barY - 100 && centerY < barY + 100) {
+        //update bar height
+        barY = centerY;
+
+        //update critter speed
+        for (let critter of critters) {
+          critter.maxSpeed = (((825 - barY) / 100) * (825 - barY)) / 100;
+        }
+      }
+    } else if (size > 40 && pinching === true) {
+      //after pinch is released stop detecting hand
+      toggleDetection();
+      pinching = false;
+    }
+  }
+}
+
+/* function squishVictim() {
+  //calculate size & position for the captured critter
+  let victim = victims[0];
   let centerX = (1440 - pointer.x + (1440 - thumb.x)) / 2;
   let centerY = (pointer.y + thumb.y) / 2;
   let size = dist(pointer.x, pointer.y, thumb.x, thumb.y);
@@ -156,18 +254,26 @@ function squish() {
       fill(255, 0, 0);
       ellipse(victim.position.x, victim.position.y, 15);
       pop();
+      //after burst, assign new victim and automatically turn off detection
+      victims.splice(0);
+      let newVictim = random(critters);
+      victims.push(newVictim);
+      victimScale = 0.4;
+      critters.splice(critters.indexOf(newVictim), 1);
+      return toggleDetection();
     }
   }
-}
-
-function wave() {
-  console.log("iyeah");
-}
+} */
 
 function toggleDetection() {
   //start & stop hand detection
   if (detecting === true) {
     handpose.detectStop();
+    //keep critters slow when detection is off
+    /* for (let critter of critters) {
+      critter.maxSpeed = 1;
+      critter.maxForce = 0.025;
+    } */
     detecting = false;
   } else {
     handpose.detectStart(video, getHandsData);
@@ -209,15 +315,57 @@ function drawWaterMovement() {
   waterTime += 0.08;
 }
 
+//speed bar visual
+function drawSpeedBar(indicatorY) {
+  push();
+  fill(100, 230, 230);
+  noStroke();
+  //plus
+  rect(1145, 28.75, 15, 45);
+  rect(1130, 43.75, 45, 15);
+  //bar itself
+  rect(1115, 102.5, 75, 10);
+  rect(1145, 112.5, 15, 600);
+  rect(1115, 712.5, 75, 10);
+  //minus
+  rect(1130, 766.25, 45, 15);
+  //indicator
+  stroke(255);
+  strokeWeight(5);
+  //set limit so bar doesn't leave spectrum
+  if (barY > 112.5 && barY < 712.5) {
+    rect(1122.5, indicatorY, 60, 30);
+  } else if (barY < 112.5) {
+    rect(1122.5, 112.5, 60, 30);
+  } else if (barY > 712.5) {
+    rect(1122.5, 712.5, 60, 30);
+  }
+  pop();
+}
+
 //glitch function
-function glitchThis() {
+function newGlitch(value) {
+  glitching = value;
+  console.log(value);
+}
+
+function drawGlitch() {
   glitch.resetBytes();
   glitch.loadQuality(0.8);
-  glitch.loadImage("background.png");
+  glitch.loadImage("white.png");
   glitch.limitBytes(0, 1);
   glitch.randomBytes(5);
   glitch.buildImage();
-  image(glitch.image, 700, 200, 300, 50);
+  for (let i = 0; i < 100; i++) {
+    let x = Math.ceil(Math.random() * 1440 - 200);
+    let y = Math.ceil(Math.random() * 875 - 50);
+    let width = Math.ceil(Math.random() * 450);
+    let height = Math.ceil(Math.random() * 35);
+    push();
+    tint(255, 100);
+    image(glitch.image, x, y, width, height);
+    pop();
+  }
 }
 
 /*---------BACKGROUND DRAW FUNCTIONS---------*/
@@ -379,7 +527,7 @@ function generateField() {
   for (let x = 0; x < maxCols; x++) {
     field.push([]);
     for (let y = 0; y < maxRows; y++) {
-      const value = noise(x / 10, y / 10) * Math.PI * 2;
+      const value = noise(x / 10, y / 10) * Math.PI;
       field[x].push(p5.Vector.fromAngle(value));
     }
   }
@@ -387,7 +535,7 @@ function generateField() {
 }
 
 function generateCritters() {
-  for (let i = 0; i < 200; i++) {
+  for (let i = 0; i < 50; i++) {
     let critter = new Critter(
       Math.random() * 1440,
       Math.random() * 825,
@@ -398,8 +546,9 @@ function generateCritters() {
     critters.push(critter);
   }
   //future victim
-  victim = random(critters);
-  critters.splice(critters.indexOf(victim));
+  let victim = random(critters);
+  victims.push(victim);
+  critters.splice(critters.indexOf(victim), 1);
 }
 
 function drawCritters() {
@@ -437,18 +586,24 @@ function draw() {
   drawPlants();
   drawBioAlgae();
 
-  frameRate(3);
+  //frameRate(3);
   drawWaterVariation();
-
-  //hand tracing - squish critters
-  detect();
-
-  frameRate(20);
   //glitch
-  //glitchThis();
+  if (glitching === true) {
+    drawGlitch();
+    glitching = false;
+  }
+
+  //hand tracking
+  detect();
 
   //critters
   drawCritters();
+
+  //speed regulation
+  if (detecting === true) {
+    drawSpeedBar(barY);
+  }
 }
 window.draw = draw;
 // this shit is necessary so we can use the files as modules & imports work

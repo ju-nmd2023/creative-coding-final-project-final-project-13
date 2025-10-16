@@ -1,6 +1,52 @@
 body {
   background-color: rgb(0, 0, 0); /*just to do things right I guess*/
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   padding: 0;
   margin: 0;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+}
+
+.startB {
+  color: rgb(0, 0, 255, 30);
+  background-color: #fff;
+  border-width: 0px;
+  border-radius: 50px;
+  align-self: center;
+  padding: 0.5em 1em;
+  margin: 2em 0;
+}
+
+.startB:hover {
+  color: #fff;
+  background-color: rgb(0, 0, 100, 30);
+  border-width: 2px;
+  border-color: #fff;
+}
+
+.stopB {
+  color: aqua;
+  background-color: #fff;
+  border-width: 0px;
+  border-radius: 50px;
+  align-self: center;
+  padding: 0.5em 1em;
+  margin: 2em 0;
+}
+
+.stopB:hover {
+  color: #fff;
+  background-color: aqua;
+  border-width: 2px;
+  border-color: #fff;
 }
