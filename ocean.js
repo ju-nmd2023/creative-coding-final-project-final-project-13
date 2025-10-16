@@ -259,13 +259,13 @@ function toggleDetection() {
 function drawWaterVariation() {
   push();
   noStroke();
-  const waterVariationFields = 50;
+  const waterVariationFields = 10;
   const variationWidth = 1440 / waterVariationFields;
   const variationHeight = 825 / waterVariationFields;
   for (let xVariation = 0; xVariation < waterVariationFields; xVariation++) {
     for (let yVariation = 0; yVariation < waterVariationFields; yVariation++) {
       if (Math.random() < 0.0001) {
-        fill(0, 0, 255, 50);
+        fill(0, 0, 255, 100);
       } else {
         noFill();
       }
@@ -277,15 +277,15 @@ function drawWaterVariation() {
 
 //perlin noise - make the water move
 function drawWaterMovement() {
-  for (let x = 0; x < width; x += 10) {
-    for (let y = 0; y < height; y += 10) {
+  for (let x = 0; x < width; x += 40) {
+    for (let y = 0; y < height; y += 40) {
       let waterNoise = noise(0.01 * x, 0.01 * y, waterTime);
       noStroke();
       fill(10, 10, 0 + waterNoise * 200);
-      rect(x, y, 10, 10);
+      rect(x, y, 40, 40);
     }
   }
-  waterTime += 0.08;
+  waterTime += 0.01;
 }
 
 //speed bar visual
@@ -656,14 +656,14 @@ function drawBlinkingEyes() {
   //the monsters in the cave opens their eyes and closes them (loop)
   push();
   noStroke();
-  if (frameCount % 30 === 0) {
+  if (frameCount % 90 === 0) {
+    fill(0, 0, 0);
+  } else {
     fill(0, 100, 255);
     rect(1100, 640, 10, 10);
     rect(1140, 635, 10, 10);
     rect(1300, 550, 10, 10);
     rect(1350, 555, 10, 10);
-  } else {
-    fill(0, 0, 0);
   }
   pop();
 }
@@ -750,7 +750,7 @@ function draw() {
   drawBlinkingEyes();
   drawHighlight();
 
-  //frameRate(3);
+  frameRate(30);
 
   drawWaterVariation();
   //glitch
