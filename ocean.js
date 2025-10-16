@@ -198,7 +198,7 @@ function drawWaterVariation() {
   for (let xVariation = 0; xVariation < waterVariationFields; xVariation++) {
     for (let yVariation = 0; yVariation < waterVariationFields; yVariation++) {
       if (Math.random() < 0.0001) {
-        fill(0, 0, 255, 30);
+        fill(0, 0, 255, 50);
       } else {
         noFill();
       }
@@ -214,7 +214,7 @@ function drawWaterMovement() {
     for (let y = 0; y < height; y += 10) {
       let waterNoise = noise(0.01 * x, 0.01 * y, waterTime);
       noStroke();
-      fill(10, 10, 0 + waterNoise * 150);
+      fill(10, 10, 0 + waterNoise * 90);
       rect(x, y, 10, 10);
     }
   }
@@ -234,9 +234,9 @@ function glitchThis() {
 
 /*---------BACKGROUND DRAW FUNCTIONS---------*/
 function drawCliff1() {
-  //cliff
+  //cliff - left
   push();
-  fill(0, 0, 30);
+  fill(0, 0, 40);
   noStroke();
   rect(0, 0, 40, 825);
   rect(40, 30, 20, 825);
@@ -257,7 +257,7 @@ function drawCliff1() {
 
   //cliff shadows
   push();
-  fill(0, 0, 20);
+  fill(0, 0, 30);
   noStroke();
   rect(0, 250, 40, 825);
   rect(40, 300, 40, 825);
@@ -269,9 +269,45 @@ function drawCliff1() {
 }
 
 function drawCliff2() {
-  //cliff
+  //cliff - middle
   push();
-  fill(0, 0, 30);
+  beginShape();
+  fill(0, 0, 40);
+  noStroke();
+  vertex(300, 0);
+  vertex(950, 0);
+  vertex(950, 100);
+  vertex(890, 100);
+  vertex(890, 120);
+  vertex(870, 120);
+  vertex(870, 150);
+  vertex(810, 150);
+  vertex(810, 220);
+  vertex(780, 220);
+  vertex(780, 270);
+  vertex(740, 270);
+  vertex(740, 340);
+  vertex(670, 340);
+  vertex(670, 400);
+  vertex(570, 400);
+  vertex(570, 380);
+  vertex(530, 380);
+  vertex(530, 300);
+  vertex(470, 300);
+  vertex(470, 270);
+  vertex(420, 270);
+  vertex(420, 180);
+  vertex(380, 180);
+  vertex(380, 80);
+  vertex(300, 80);
+  endShape(CLOSE);
+  pop();
+}
+
+function drawCliff3() {
+  //cliff - right
+  push();
+  fill(0, 0, 40);
   noStroke();
   rect(600, 800, 40, 825);
   rect(640, 750, 30, 825);
@@ -291,7 +327,7 @@ function drawCliff2() {
 
   //cliff shadows
   push();
-  fill(0, 0, 20);
+  fill(0, 0, 30);
   noStroke();
   rect(750, 660, 80, 825);
   rect(830, 600, 100, 825);
@@ -316,15 +352,67 @@ function drawCliff2() {
 }
 
 function drawPlants() {
-  //vegetation hanging from the cave
+  //vegetation on the left cliff
   push();
   fill(10, 35, 20);
   noStroke();
-  rect(1230, 395, 10, 30);
-  rect(1240, 395, 6, 60);
-  rect(1245, 395, 10, 40);
-  rect(1255, 395, 6, 70);
-  rect(1261, 395, 6, 20);
+  rect(135, 250, 40, 10);
+  rect(145, 240, 10, 20);
+  pop();
+
+  //vegetation on the top of the right cliff - right to left
+  push();
+  beginShape();
+  fill(10, 35, 20);
+  noStroke();
+  vertex(380, 110);
+  vertex(380, 185);
+  vertex(420, 185);
+  vertex(420, 215);
+  vertex(435, 215);
+  vertex(435, 270);
+  vertex(485, 270);
+  vertex(485, 245);
+  vertex(495, 245);
+  vertex(495, 225);
+  vertex(505, 225);
+  vertex(505, 200);
+  vertex(515, 200);
+  vertex(515, 170);
+  vertex(505, 170);
+  vertex(505, 140);
+  vertex(480, 140);
+  vertex(480, 100);
+  vertex(450, 100);
+  vertex(450, 120);
+  vertex(440, 120);
+  vertex(440, 110);
+  endShape();
+  pop();
+
+  push();
+  beginShape();
+  fill(10, 35, 20);
+  noStroke();
+  vertex(680, 0);
+  vertex(680, 40);
+  vertex(700, 40);
+  vertex(700, 100);
+  vertex(710, 100);
+  vertex(710, 80);
+  vertex(720, 80);
+  vertex(720, 60);
+  vertex(740, 60);
+  vertex(740, 0);
+  endShape(CLOSE);
+  pop();
+
+  //vegetation on the right cliff
+  push();
+  fill(10, 35, 20);
+  noStroke();
+  rect(820, 450, 80, 10);
+  rect(835, 450, 10, 20);
   pop();
 
   //vegetation on the side of the cave
@@ -341,20 +429,51 @@ function drawPlants() {
   rect(940, 780, 10, 100);
   pop();
 
-  //vegetation on the left cliff
+  //vegetation hanging from the cave
   push();
   fill(10, 35, 20);
   noStroke();
-  rect(135, 250, 40, 10);
-  rect(145, 240, 10, 20);
+  rect(1230, 395, 10, 30);
+  rect(1240, 395, 6, 60);
+  rect(1245, 395, 10, 40);
+  rect(1255, 395, 6, 70);
+  rect(1261, 395, 6, 20);
   pop();
 
-  //vegetation on the right cliff
+  //vegetation on the top of the right cliff
   push();
+  beginShape();
   fill(10, 35, 20);
   noStroke();
-  rect(820, 450, 80, 10);
-  rect(835, 450, 10, 20);
+  vertex(1250, 45);
+  vertex(1420, 45);
+  vertex(1420, 250);
+  vertex(1410, 250);
+  vertex(1410, 270);
+  vertex(1400, 270);
+  vertex(1400, 200);
+  vertex(1390, 200);
+  vertex(1390, 300);
+  vertex(1370, 300);
+  vertex(1370, 280);
+  vertex(1360, 280);
+  vertex(1360, 260);
+  vertex(1350, 260);
+  vertex(1350, 240);
+  vertex(1340, 240);
+  vertex(1340, 290);
+  vertex(1330, 290);
+  vertex(1330, 250);
+  vertex(1320, 250);
+  vertex(1320, 230);
+  vertex(1310, 230);
+  vertex(1310, 210);
+  vertex(1280, 210);
+  vertex(1280, 150);
+  vertex(1260, 150);
+  vertex(1260, 100);
+  vertex(1250, 100);
+  endShape();
   pop();
 }
 
@@ -373,14 +492,80 @@ function drawBioAlgae() {
   rect(970, 750, 10, 10);
   pop();
 
-  //bio algae/monsters in the cave
+  //bigg chunk of bio algae on the right cliff - from left to right
   push();
+  beginShape();
   fill(0, 100, 255);
   noStroke();
-  rect(1100, 640, 10, 10);
-  rect(1140, 635, 10, 10);
-  rect(1300, 550, 10, 10);
-  rect(1350, 555, 10, 10);
+  vertex(120, 410);
+  vertex(150, 410);
+  vertex(150, 500);
+  vertex(140, 500);
+  vertex(140, 480);
+  vertex(130, 480);
+  vertex(130, 460);
+  vertex(120, 460);
+  endShape(CLOSE);
+  pop();
+
+  push();
+  beginShape();
+  fill(0, 100, 255);
+  noStroke();
+  vertex(955, 460);
+  vertex(1020, 460);
+  vertex(1020, 500);
+  vertex(1010, 500);
+  vertex(1010, 540);
+  vertex(995, 540);
+  vertex(995, 560);
+  vertex(985, 560);
+  vertex(985, 580);
+  vertex(975, 580);
+  vertex(975, 600);
+  vertex(955, 600);
+  endShape(CLOSE);
+  pop();
+
+  push();
+  beginShape();
+  fill(0, 100, 255);
+  noStroke();
+  vertex(1050, 450);
+  vertex(1050, 370);
+  vertex(1090, 370);
+  vertex(1090, 400);
+  vertex(1080, 400);
+  vertex(1080, 430);
+  vertex(1050, 430);
+  endShape(CLOSE);
+  pop();
+}
+
+function drawBlinkingEyes() {
+  //the monsters in the cave opens their eyes and closes them (loop)
+  push();
+  noStroke();
+  if (frameCount % 30 === 0) {
+    fill(0, 100, 255);
+    rect(1100, 640, 10, 10);
+    rect(1140, 635, 10, 10);
+    rect(1300, 550, 10, 10);
+    rect(1350, 555, 10, 10);
+  } else {
+    fill(0, 0, 0);
+  }
+  pop();
+}
+
+function drawHighlight() {
+  //highlights (white) from left to right
+  push();
+  fill(255, 255, 255);
+  noStroke();
+  rect(135, 415, 10, 20);
+  rect(965, 470, 10, 20);
+  rect(1055, 375, 10, 10);
   pop();
 }
 
@@ -446,10 +631,14 @@ function draw() {
   //background
   drawCliff1();
   drawCliff2();
+  drawCliff3();
   drawPlants();
   drawBioAlgae();
+  drawBlinkingEyes();
+  drawHighlight();
 
   frameRate(3);
+
   drawWaterVariation();
 
   //hand tracing - squish critters
@@ -476,3 +665,7 @@ function draw() {
 }
 window.draw = draw;
 // this shit is necessary so we can use the files as modules & imports work
+
+/*---------------TO DO LIST FOR MEETING----------------*/
+//Fix frameCount - bubbles and eyes
+//Add the sound to the squish action
