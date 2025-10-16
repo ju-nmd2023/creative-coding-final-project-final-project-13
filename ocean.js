@@ -135,11 +135,11 @@ function detect() {
       thumb = keypoints[4];
       //draw tip trackers for UI
       push();
-      fill(100, 230, 230, 190);
-      stroke(100, 230, 230);
+      fill(10, 35, 20);
+      stroke(255, 255, 255);
       strokeWeight(2);
-      ellipse(1440 - pointer.x, pointer.y, 50);
-      ellipse(1440 - thumb.x, thumb.y, 50);
+      ellipse(1440 - pointer.x, pointer.y, 20);
+      ellipse(1440 - thumb.x, thumb.y, 20);
       pop();
 
       //case: pinky & ring finger is folded, activate squish
@@ -262,16 +262,16 @@ function toggleDetection() {
 
 // #region /*---------------OTHER FUNCTIONS----------------*/
 //water variation function - TRYING TO MAKE IT WORK WITH THE PERLIN NOISE :(
-function drawWaterVariation(g) {
-  g.push();
-  g.noStroke();
-  const waterVariationFields = 200;
+function drawWaterVariation() {
+  push();
+  noStroke();
+  const waterVariationFields = 10;
   const variationWidth = 1440 / waterVariationFields;
   const variationHeight = 825 / waterVariationFields;
   for (let xVariation = 0; xVariation < waterVariationFields; xVariation++) {
     for (let yVariation = 0; yVariation < waterVariationFields; yVariation++) {
       if (Math.random() < 0.0001) {
-        g.fill(0, 0, 255, 50);
+        fill(0, 0, 255, 100);
       } else {
         g.noFill();
       }
@@ -283,41 +283,41 @@ function drawWaterVariation(g) {
 
 //perlin noise - make the water move
 function drawWaterMovement() {
-  for (let x = 0; x < width; x += 10) {
-    for (let y = 0; y < height; y += 10) {
+  for (let x = 0; x < width; x += 40) {
+    for (let y = 0; y < height; y += 40) {
       let waterNoise = noise(0.01 * x, 0.01 * y, waterTime);
       noStroke();
-      fill(10, 10, 0 + waterNoise * 90);
-      rect(x, y, 10, 10);
+      fill(10, 10, 0 + waterNoise * 200);
+      rect(x, y, 40, 40);
     }
   }
-  waterTime += 0.08;
+  waterTime += 0.01;
 }
 
 //speed bar visual
 function drawSpeedBar(indicatorY) {
   push();
-  fill(100, 230, 230);
+  fill(255, 255, 255);
   noStroke();
   //plus
-  rect(1145, 28.75, 15, 45);
-  rect(1130, 43.75, 45, 15);
+  rect(1145, 45, 10, 45);
+  rect(1127.5, 60.5, 45, 10);
   //bar itself
-  rect(1115, 102.5, 75, 10);
-  rect(1145, 112.5, 15, 600);
-  rect(1115, 712.5, 75, 10);
+  rect(1125, 102.5, 50, 10);
+  rect(1145, 112.5, 10, 600);
+  rect(1125, 712.5, 50, 10);
   //minus
-  rect(1130, 766.25, 45, 15);
+  rect(1127.5, 736, 45, 10);
   //indicator
   stroke(255);
   strokeWeight(5);
   //set limit so bar doesn't leave spectrum
   if (barY > 112.5 && barY < 712.5) {
-    rect(1122.5, indicatorY, 60, 30);
+    rect(1130, indicatorY, 40, 10);
   } else if (barY < 112.5) {
-    rect(1122.5, 112.5, 60, 30);
+    rect(1130, 112.5, 60, 30);
   } else if (barY > 712.5) {
-    rect(1122.5, 712.5, 60, 30);
+    rect(1130, 712.5, 60, 30);
   }
   pop();
 }
@@ -399,7 +399,7 @@ function drawCliff2() {
   //cliff - middle
   push();
   beginShape();
-  fill(0, 0, 40);
+  fill(0, 0, 0);
   noStroke();
   vertex(300, 0);
   vertex(950, 0);
@@ -673,14 +673,14 @@ function drawBlinkingEyes() {
   //the monsters in the cave opens their eyes and closes them (loop)
   push();
   noStroke();
-  if (frameCount % 30 === 0) {
+  if (frameCount % 90 === 0) {
+    fill(0, 0, 0);
+  } else {
     fill(0, 100, 255);
     rect(1100, 640, 10, 10);
     rect(1140, 635, 10, 10);
     rect(1300, 550, 10, 10);
     rect(1350, 555, 10, 10);
-  } else {
-    fill(0, 0, 0);
   }
   pop();
 }
@@ -775,6 +775,9 @@ function draw() {
   drawBlinkingEyes();
   drawHighlight();
 
+  frameRate(30);
+
+  drawWaterVariation();
   //glitch
   if (frameCount % 20 === 0) {
     slowLayer.clear();
