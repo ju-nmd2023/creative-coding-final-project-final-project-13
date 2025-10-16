@@ -1,7 +1,7 @@
 import { Critter } from "./critters.js";
 import { Squish } from "./squishCritter.js";
 
-//REFERENCES
+//#region REFERENCES
 //https://codepen.io/pixelkind/pen/JjwGQgd - the following code was created with the help of this tutorial
 //https://chatgpt.com/share/68e569bc-9108-8003-be50-cb73fb308bed - the following code was created with the help of chatGPT
 //https://tonejs.github.io/docs/14.9.17/index.html - this website was used to understand Tone.js
@@ -10,6 +10,7 @@ import { Squish } from "./squishCritter.js";
 //https://codepen.io/pixelkind/pen/XWojVaO - the following code was created with the help of this tutorial
 //https://editor.p5js.org/ml5/sketches/W9vFFT5RM - squishVictim(); was created with the help of this tutorial
 //https://editor.p5js.org/Tr4yvon/sketches/fTjWZZLBf - squishVictim(); was created with the help of this tutorial
+//#endregion
 
 //#region VARIABLES
 //handpose variables
@@ -58,7 +59,7 @@ let barY = 562.5;
 let pinching = false;
 //#endregion
 
-/*-----------------SOUND SETUP-----------------*/
+//#region /*-----------------SOUND SETUP-----------------*/
 //background music
 window.addEventListener("click", () => {
   Tone.start();
@@ -74,16 +75,9 @@ window.addEventListener("load", () => {
   melody.fadeIn = 15;
   melody.fadeOut = 5;
 });
+//#endregion
 
-function mousePressed(/*change this so if fits with the movement detector later!!*/) {
-  polySynth.triggerAttackRelease("F5", "8n");
-  setTimeout(() => {
-    polySynth.triggerAttackRelease("D5", "8n");
-  }, 295);
-}
-window.mousePressed = mousePressed;
-
-/*---------------SETUP FUNCTIONS-----------------*/
+//#region /*---------------SETUP FUNCTIONS-----------------*/
 function preload() {
   handpose = ml5.handPose();
 }
@@ -108,8 +102,9 @@ function setup() {
   timedGlitch = window.setInterval(newGlitch(), 5000, true, false);
 }
 window.setup = setup;
+//#endregion
 
-/*----------------HANDPOSE----------------*/
+//#region /*----------------HANDPOSE----------------*/
 button.addEventListener("click", () => {
   //hand detection start/stop at buttonclick
   toggleDetection();
@@ -157,7 +152,9 @@ function detect() {
     }
   }
 }
-//PARTICLES/EXPLOADING STAR FUNCTIONS
+//#endregion
+
+//#region /*----------------PARTICLES/EXPLODING STAR FUNCTIONS----------------*/
 function squishThis(x, y) {
   for (let i = 0; i < 700; i++) {
     const squishX = x + random(-10, 10);
@@ -200,12 +197,14 @@ function squish(value) {
       victimScale = size / 100;
 
       //when someone pinches, burst critter
-      if (size <= 20) {
-        //REPLACE THE FOLLOWING 4 LINES WITH BURST ANIMATION
-        push();
-        fill(255, 0, 0);
-        ellipse(victim.position.x, victim.position.y, 15);
-        pop();
+      if (size <= 50) {
+        //burst animation
+        squishThis(centerX, centerY);
+        //burst sound
+        polySynth.triggerAttackRelease("F5", "8n");
+        setTimeout(() => {
+          polySynth.triggerAttackRelease("D5", "8n");
+        }, 295);
         //after burst, assign new victim and automatically turn off detection
         victims.splice(0);
         let newVictim = random(critters);
@@ -230,7 +229,7 @@ function squish(value) {
           critter.maxSpeed = (((825 - barY) / 100) * (825 - barY)) / 100;
         }
       }
-    } else if (size > 75 && pinching === true) {
+    } else if (size > 40 && pinching === true) {
       //after pinch is released stop detecting hand
       toggleDetection();
       pinching = false;
@@ -253,8 +252,9 @@ function toggleDetection() {
     detecting = true;
   }
 }
+//#endregion
 
-/*---------------OTHER FUNCTIONS----------------*/
+// #region /*---------------OTHER FUNCTIONS----------------*/
 //water variation function - TRYING TO MAKE IT WORK WITH THE PERLIN NOISE :(
 function drawWaterVariation() {
   push();
@@ -340,8 +340,9 @@ function drawGlitch() {
     pop();
   }
 }
+//#endregion
 
-/*---------BACKGROUND DRAW FUNCTIONS---------*/
+//#region /*---------BACKGROUND DRAW FUNCTIONS---------*/
 function drawCliff1() {
   //cliff - left
   push();
@@ -677,8 +678,9 @@ function drawHighlight() {
   rect(1055, 375, 10, 10);
   pop();
 }
+//#endregion
 
-/*---------CRITTERS DRAW FUNCTIONS---------*/
+//#region /*---------CRITTERS DRAW FUNCTIONS---------*/
 function generateField() {
   let field = [];
   noiseSeed(Math.random() * 100);
@@ -730,6 +732,7 @@ function drawCritters() {
     critter.draw(0.4);
   }
 }
+//#endregion
 
 /*---------------!THE! DRAW FUNCTION----------------*/
 
@@ -747,7 +750,7 @@ function draw() {
   drawBlinkingEyes();
   drawHighlight();
 
-  frameRate(3);
+  //frameRate(3);
 
   drawWaterVariation();
   //glitch
