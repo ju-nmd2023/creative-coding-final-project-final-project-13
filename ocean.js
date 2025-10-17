@@ -11,6 +11,7 @@ import { Squish } from "./squishCritter.js";
 //https://editor.p5js.org/ml5/sketches/W9vFFT5RM - squishVictim(); was created with the help of this tutorial
 //https://editor.p5js.org/Tr4yvon/sketches/fTjWZZLBf - squishVictim(); was created with the help of this tutorial
 //https://chatgpt.com/share/68f1512b-0734-800d-8159-ec2683b4b9f3 - the following code was created with the help of ChatGPT
+//https://soundimage.org/wp-content/uploads/2016/11/Underground-Stream_Looping.mp3 - the mp3 file used for the background sound
 //#endregion
 
 //#region VARIABLES
@@ -27,8 +28,8 @@ let detecting = false;
 let glitch;
 
 //sound effect variables
-const autofilter = new Tone.PingPongDelay("7n", 0.2).toDestination();
-const polySynth = new Tone.MonoSynth().connect(autofilter);
+const pingPong = new Tone.PingPongDelay("7n", 0.2).toDestination();
+const monoSynth = new Tone.MonoSynth().connect(pingPong);
 
 //time management for water movement and water variation
 let waterTime = 0;
@@ -210,9 +211,9 @@ function squish(value) {
         //burst animation
         squishThis(centerX, centerY);
         //burst sound
-        polySynth.triggerAttackRelease("F5", "8n");
+        monoSynth.triggerAttackRelease("F5", "8n");
         setTimeout(() => {
-          polySynth.triggerAttackRelease("D5", "8n");
+          monoSynth.triggerAttackRelease("D5", "8n");
         }, 295);
         //after burst, assign new victim and automatically turn off detection
         victims.splice(0);
@@ -268,17 +269,17 @@ function toggleDetection() {
 function drawWaterVariation(g) {
   g.push();
   g.noStroke();
-  const waterVariationFields = 10;
+  const waterVariationFields = 50;
   const variationWidth = 1440 / waterVariationFields;
   const variationHeight = 825 / waterVariationFields;
   for (let xVariation = 0; xVariation < waterVariationFields; xVariation++) {
     for (let yVariation = 0; yVariation < waterVariationFields; yVariation++) {
-      if (Math.random() < 0.0001) {
-        g.fill(0, 0, 255, 100);
+      if (Math.random() < 0.001) {
+        g.fill(255, 255, 255, 100);
         g.ellipse(
           xVariation * variationWidth,
           yVariation * variationHeight,
-          10
+          Math.random() * 20 + 5
         );
       }
     }
@@ -764,14 +765,6 @@ function draw() {
   background(0, 0, 0);
   drawWaterMovement();
 
-  //update slow layer every 20 frames (~3fps)
-  if (frameCount % 20 === 0) {
-    slowLayer.clear();
-    slowLayer.push();
-    drawWaterVariation(slowLayer);
-    slowLayer.pop();
-  }
-
   //background
   drawCliff1();
   drawCliff2();
@@ -785,6 +778,7 @@ function draw() {
   if (frameCount % 20 === 0) {
     slowLayer.clear();
     slowLayer.push();
+    drawWaterVariation(slowLayer);
     drawGlitch(slowLayer);
     slowLayer.pop();
   }
